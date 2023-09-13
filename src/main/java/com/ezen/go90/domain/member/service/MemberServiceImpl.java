@@ -44,4 +44,12 @@ public class MemberServiceImpl implements MemberService{
 		memberMapper.update(member);
 	}
 
+	@Override
+	public void secession(String memberId) {
+		memberMapper.transfer(memberId);
+		memberMapper.delete(memberId);
+	}
+	
+	
+
 }

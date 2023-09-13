@@ -1,4 +1,4 @@
-package com.ezen.springmvc;
+package com.ezen.go90;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,10 +33,15 @@ public class MemberMapperTest {
 	}
 	
 	@Test
+	public void deleteTest() {
+		memberMapper.transfer("ghskfen");
+	}
+	
+	@Test
 	@Disabled
 	public void findByIdTest() {
 		// given
-		String memberId = "bangry";
+		String memberId = "sony";
 		// when
 		Member member = memberMapper.findById(memberId);
 		// then
@@ -48,7 +53,7 @@ public class MemberMapperTest {
 	@Test
 	@Disabled
 	void findByNameLikeTest() {
-		String findName = "김";
+		String findName = "손";
 		List<Member> list = memberMapper.findByNameLike(findName);
 		log.info("이름 와일드카드 검색 : {}", list);
 		for (Member member : list) {
@@ -56,30 +61,29 @@ public class MemberMapperTest {
 		}
 	}
 	
-	@Test
-	@Disabled
-	void createTest() {
-		Member createMember = Member
-				.builder()
-				.id("sony")
-				.passwd("1111")
-				.name("손흥민")
-				.email("sony@gmail.com")
-				.build();
-		memberMapper.create(createMember);
-		log.info("회원 등록 완료 : {}", createMember);
-	}
+//  회원가입
+  @Test
+  @Disabled
+  void createTest() {
+     Member createMember = Member
+           .builder()
+           .memberId("sonn12345")
+           .passwd("1234")
+           .name("손흥민")
+           .email("sony@gmail.com")
+           .memberImg("/img/profile.png")
+           .build();
+     memberMapper.create(createMember);
+     log.info("회원 등록 완료 : {}", createMember);
+  }
+	
+	
 	
 	@Test
 	@Disabled
 	void updateTest() {
-		Member updateMember = Member
-				.builder()
-				.id("sony")
-				.passwd("2222")
-				.build();
-		memberMapper.update(updateMember);
-		log.info("회원 수정 완료 : {}", updateMember);
+		
+//		memberMapper.update("test6767","1234");
 	}
 	
 	
@@ -100,7 +104,7 @@ public class MemberMapperTest {
 	}
 	
 	@Test
-//	@Disabled
+	@Disabled
 	void findBySearchAllOptionTest() {
 		MemberSearchCondition searchCondition = 
 				MemberSearchCondition

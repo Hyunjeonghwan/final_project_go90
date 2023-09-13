@@ -14,5 +14,6 @@ public interface MemberService {
 	public List<Member> getMemberList();
 	public Member getMember(String id);
 	public void editMember(Member member);
+	public void secession(String memberId);
 
 }

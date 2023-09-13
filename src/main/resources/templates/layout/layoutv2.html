@@ -66,7 +66,7 @@
     <div id="allmn_btn_wrap"><div id="allmn_btn"><span></span></div></div>
    <!-- 로고 -->
    <div id="top_logo">
-      <a href="index.html"><img src="img/logo.png" alt="Go90 FOOTBALL CLUB" /></a>
+      <a href="/"><img src="/img/logo.png" alt="Go90 FOOTBALL CLUB" /></a>
    </div>
 
    <!-- 상단메뉴 -->
@@ -107,10 +107,13 @@
                             </ul>
         </li>
             </ul>
-            <div id="login_all">
+           <div id="login_all">
              
-                <a href="bbs/login.html">LOGIN</a>
-                <a href="bbs/register_form.html">JOIN US</a>
+                <a th:if="${session.loginMember} == null" th:href="@{/member/login}">LOGIN</a>
+                <a th:if="${session.loginMember} != null" th:text="|${session.loginMember.name}님 즐거운 하루 되세요|"></a>
+                <a th:if="${session.loginMember} != null" th:href="|@{/member/mypage/}${session.loginMember.memberId}|">MY PAGE</a>
+                <a th:if="${session.loginMember} == null" th:href="@{/member/register}">JOIN US</a>
+                <a th:if="${session.loginMember} != null" th:href="@{/member/logout}">로그아웃</a>
             </div>
 </div>
 <!-- 소분류 끝 -->

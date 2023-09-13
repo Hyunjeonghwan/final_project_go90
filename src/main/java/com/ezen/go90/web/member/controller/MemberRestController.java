@@ -37,7 +37,7 @@ public class MemberRestController {
 	@ResponseBody
 	public Object register(@RequestBody @Validated  Member member, BindingResult bindingResult) {
 		log.info("회원 가입 API 요청");
-		if (bindingResult.hasErrors()) {
+		if (!bindingResult.hasErrors()) {
 			// bindingResult를 모델에 저장하고, 타임리프 HTML 템플릿 페이지에서 렌더링하는 것이 아니라
 			// bindingResult에 저장한 오류 메시지를 읽어와서 응답메시지 바디에 JSON으로 출력한다.
 			return bindingResult.getAllErrors();

@@ -1,4 +1,4 @@
-package com.ezen.springmvc;
+package com.ezen.go90;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

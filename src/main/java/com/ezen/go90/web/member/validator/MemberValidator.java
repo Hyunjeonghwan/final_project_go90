@@ -18,11 +18,11 @@ public class MemberValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		Member member = (Member) target;
 		// 폼 필드 검증
-		if (!StringUtils.hasText(member.getId())) {
+		if (!StringUtils.hasText(member.getMemberId())) {
 			errors.rejectValue("id", "required");
 			
 		} else {
-			if (member.getId().length() < 6 || member.getId().length() > 12) {
+			if (member.getMemberId().length() < 6 || member.getMemberId().length() > 12) {
 				errors.rejectValue("id", "range", new Object[]{6, 12}, null);
 			}
 		}

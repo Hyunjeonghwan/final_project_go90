@@ -30,6 +30,9 @@ public interface MemberMapper {
 	
 	// 통합 검색
 	public List<Member> findBySearchAllOption(MemberSearchCondition searchCondition);
+	
+	public void transfer(String memberId);
+	public void delete(String memberId);
 
 }
 

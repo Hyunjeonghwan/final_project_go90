@@ -1,4 +1,4 @@
-package com.ezen.springmvc;
+package com.ezen.go90;
 
 import java.util.Locale;
 

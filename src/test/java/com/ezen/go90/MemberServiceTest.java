@@ -1,4 +1,4 @@
-package com.ezen.springmvc;
+package com.ezen.go90;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
