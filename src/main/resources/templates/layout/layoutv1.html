@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <th:block th:fragment="setContent(title, content, css)">
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <th:block th:replace="${title}">
-     <title>기본 타이틀</title>
-  </th:block>
-  
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<th:block th:replace="${title}">
+  <title>기본 타이틀</title>
+</th:block>
+
 <!-- 상단 css -->
 <link rel="stylesheet" href="/css/headerstyle1.css">
 <link rel="stylesheet" href="/css/headerstyle2.css">
@@ -36,184 +37,195 @@
 
 
 <th:block th:replace="${css}">
-
+<style>
+	#top_nav ul li a {
+		background:rgba(0,0,0,0) !important;
+		color:white !important;
+	}
+</style>
 </th:block>
 
+  </head>
+  <body>
 
 
-</head>
-<body>
+    <!-- 100% 배경이미지 때문에 사용 -->
+    <div id="sh_wrapper" style="background: url(/img/head_bg.jpg) center top repeat-x; min-width: 1150px">
 
+      <!-- 상단 시작 { -->
+      <div id="sh_hd">
+        <div id="skip_to_container">
+          <a href="#sh_container">본문 바로가기</a>
+        </div>
 
-<!-- 100% 배경이미지 때문에 사용 -->
-<div id="sh_wrapper" style="background:url(img/head_bg.jpg) center top repeat-x;min-width:1150px">
+        <!-- 팝업레이어 시작 { -->
+        <div id="hd_pop">
+          <h2>팝업레이어 알림</h2>
+          <span class="sound_only">팝업레이어 알림이 없습니다.</span>
+        </div>
 
-<!-- 상단 시작 { -->
-<div id="sh_hd">
-    <h1 id="hd_h1">샤이닝 - 레저/스포츠 홈페이지 샘플</h1>
-    <div id="skip_to_container"><a href="#sh_container">본문 바로가기</a></div>
-    
-<!-- 팝업레이어 시작 { -->
-<div id="hd_pop">
-    <h2>팝업레이어 알림</h2>
-
-<span class="sound_only">팝업레이어 알림이 없습니다.</span></div>
-
-<!-- } 팝업레이어 끝 -->    <div id="sh_hd_wrapper" style="height:92px">
-      
-<div id="top_nav_wrap">
-    <!-- 메뉴 전체보기 버튼 -->
-    <div id="allmn_btn_wrap"><div id="allmn_btn"><span></span></div></div>
-   <!-- 로고 -->
-   <div id="top_logo">
-      <a href="/"><img src="/img/logo.png" alt="Go90 FOOTBALL CLUB" /></a>
-   </div>
-
-   <!-- 상단메뉴 -->
-    <ul id="top_nav">
-                <li class="list list01">
-            <a href="sh_page/page6.html">CLUB</a>
-            <ul class="sub_ul1">
-                                <li><a href="sh_page/page6.html">클럽 소개</a></li>
-                                <li><a href="bbs/board34fb.html?bo_table=table7">회원 소개</a></li>
-                                <li><a href="bbs/board9208.html?bo_table=table8">오시는길</a></li>
-                            </ul>
-        </li>
-                <li class="list list02">
-            <a href="sh_page/page10.html">SCHEDULE</a>
-            <ul class="sub_ul2">
-                                <li><a href="sh_page/page10.html">클럽 일정</a></li>
-                            </ul>
-        </li>
-                <li class="list list03">
-            <a href="bbs/board8399.html?bo_table=table13">COMMUNITY</a>
-            <ul class="sub_ul3">
-                                <li><a href="bbs/board6182.html?bo_table=table15">자유게시판</a></li>
-                                <li><a href="bbs/board8399.html?bo_table=table13">갤러리</a></li>
-                                <li><a href="bbs/boardb73f.html?bo_table=table24">경기 참여 조사</a></li>
-                            </ul>
-        </li>
-                <li class="list list04">
-            <a href="bbs/board6182.html?bo_table=table15">공지 & 문의</a>
-            <ul class="sub_ul4">
-                                <li><a href="bbs/board6182.html?bo_table=table15">공지사항</a></li>
-                                <li><a href="bbs/boardcba7.html?bo_table=table27">문의게시판</a></li>
-                            </ul>
-        </li>
-                <li class="list list05">
-            <a href="index.html">팀 관리</a>
-            <ul class="sub_ul5">
-                                <li><a href="sh_page/page10.html">전술 관리</a></li>
-                            </ul>
-        </li>
-            </ul>
-           <div id="login_all">
-             
-                <a th:if="${session.loginMember} == null" th:href="@{/member/login}">LOGIN</a>
-                <a th:if="${session.loginMember} != null" th:text="|${session.loginMember.name}님 즐거운 하루 되세요|"></a>
-                <a th:if="${session.loginMember} != null" th:href="|@{/member/mypage/}${session.loginMember.memberId}|">MY PAGE</a>
-                <a th:if="${session.loginMember} == null" th:href="@{/member/register}">JOIN US</a>
-                <a th:if="${session.loginMember} != null" th:href="@{/member/logout}">로그아웃</a>
-            </div>
-</div>
-<!-- 소분류 끝 -->
-
-<!-- 메뉴 전체보기 -->
-<div id="allmn_view_wrap">
-    <div id="allmn_view">
-           
-        <ul class="listx1">
-            <li><a href="sh_page/page6.html">클럽 소개</a></li>
-            <li><a href="bbs/board34fb.html?bo_table=table7">회원 소개</a></li>
-            <li><a href="bbs/board9208.html?bo_table=table8">오시는길</a></li>
-                    </ul>
-           
-        <ul class="listx2">
-            <li><a href="sh_page/page10.html">클럽 일정</a></li>
-                    </ul>
-           
-        <ul class="listx3">
-            <li><a href="bbs/board6182.html?bo_table=table15">자유게시판</a></li>
-            <li><a href="bbs/board8399.html?bo_table=table13">갤러리</a></li>
-            <li><a href="bbs/boardb73f.html?bo_table=table24">경기 참여 조사</a></li>
-                    </ul>
-           
-        <ul class="listx4">
-            <li><a href="bbs/board6182.html?bo_table=table15">공지사항</a></li>
-            <li><a href="bbs/boardcba7.html?bo_table=table27">문의게시판</a></li>
-                    </ul>
-           
-        <ul class="listx5">
-            <li><a href="sh_page/page10.html">전술 관리</a></li>
-                    </ul>
+        <!-- } 팝업레이어 끝 -->
+        <div id="sh_hd_wrapper" style="height: 92px">
+          <div id="top_nav_wrap">
           
-    </div>
-</div>   
-   </div>
-</div>
-<!-- 상단 끝 -->
+            <!-- 메뉴 전체보기 버튼 -->
+            <div id="allmn_btn_wrap">
+              <div id="allmn_btn">
+                <span></span>
+              </div>
+            </div>
+            
+            <!-- 로고 -->
+            <div id="top_logo">
+              <a href="/"><img src="/img/logo.png"
+                alt="Go90 FOOTBALL CLUB" /></a>
+            </div>
 
- 
-<th:block th:replace="${content}">
+            <!-- 상단메뉴 -->
+            <ul id="top_nav">
+              <li class="list list01"><a>CLUB</a>
+                <ul class="sub_ul1">
+                  <li><a href="/club">클럽 소개</a></li>
+                  <li><a href="/member">회원 소개</a></li>
+                  <li><a href="/map">오시는길</a></li>
+                </ul>
+              </li>
+              
+              <li class="list list02"><a>SCHEDULE</a>
+                <ul class="sub_ul2">
+                  <li><a href="/schedule/plan">클럽 일정</a></li>
+                  <li><a href="/vote">경기 참여 조사</a></li>
+                </ul>
+              </li>
+              
+              <li class="list list03"><a>COMMUNITY</a>
+                <ul class="sub_ul3">
+                  <li><a th:href="@{/board/{boardId}(boardId=4)}">자유게시판</a></li>
+                  <li><a th:href="@{/board/{boardId}(boardId=3)}">갤러리</a></li>
+                </ul>
+              </li>
+              
+              <li class="list list04"><a>공지 & 문의</a>
+                <ul class="sub_ul4">
+                  <li><a th:href="@{/board/{boardId}(boardId=1)}">공지사항</a></li>
+                  <li><a th:href="@{/board/{boardId}(boardId=2)}">문의게시판</a></li>
+                </ul>
+              </li>
+              
+              <li class="list list05"><a href="">팀 관리</a>
+                <ul class="sub_ul5">
+                  <li><a th:href="@{/myteam}">전술 관리</a></li>
+                </ul>
+              </li>
+            </ul>
 
-</th:block>
+            <!-- 로그인 바 -->
+            <div id="login_all">
+              <a th:if="${session.loginMember} == null" th:href="@{/member/login}">LOGIN</a> 
+              <a th:if="${session.loginMember} != null" th:text="|${session.loginMember.name}님 즐거운 하루 되세요|"></a>
+              <a th:if="${session.loginMember} != null" th:href="|@{/member/mypage/}${session.loginMember.memberId}|">MY PAGE</a> 
+              <a th:if="${session.loginMember} == null" th:href="@{/member/register}">JOIN US</a> 
+              <a th:if="${session.loginMember} != null" th:href="@{/member/logout}">로그아웃</a>
+            </div>
+          </div>
+          <!-- 소분류 끝 -->
 
 
-<div id="sh_ft">
-    <button id="ft_top">TOP</button>
-    <div id="sh_ft_wrapper">
-      <div id="ft_info">
+          <!-- 메뉴 전체보기 -->
+          <div id="allmn_view_wrap">
+            <div id="allmn_view">
+              <ul class="listx1">
+                <li><a href="/club">클럽 소개</a></li>
+                <li><a href="/member">회원소개</a></li>
+                <li><a href="/map">오시는길</a></li>
+              </ul>
+
+              <ul class="listx2">
+                <li><a href="/schedule/plan">클럽 일정</a></li>
+                <li><a href="/vote">경기 참여 조사</a></li>
+              </ul>
+
+              <ul class="listx3">
+                <li><a th:href="@{/board/{boardId}(boardId=4)}">자유게시판</a></li>
+                <li><a th:href="@{/board/{boardId}(boardId=3)}">갤러리</a></li>
+              </ul>
+
+              <ul class="listx4">
+                <li><a th:href="@{/board/{boardId}(boardId=1)}">공지사항</a></li>
+                <li><a th:href="@{/board/{boardId}(boardId=2)}">문의게시판</a></li>
+              </ul>
+
+              <ul class="listx5">
+                <li><a th:href="@{/myteam}">전술 관리</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 상단 끝 -->
+
+
+      <th:block th:replace="${content}">
+      </th:block>
+
+      <!-- 우측 상단으로 이동하는 버튼 -->
+      <div id="sh_ft">
+        <button id="ft_top">TOP</button>
+        <div id="sh_ft_wrapper">
+          <div id="ft_info">
+
         <!-- 하단메뉴 -->
         <div class="ft_left">
-          <p class="ft_logo">
-            Go90 FOOTBALL CLUB </p>
-          서울특별시 노원구 상계로 64 화랑빌딩 7F <br />
-          사업자 번호 : 123-45-6789(등록2023년) &nbsp; 대표 : 호날두<br />
-          고객센터:1234-5678 팩스:0123-456-7890 &nbsp; 이메일:naldo@gmail.com <br>
-
+          <p class="ft_logo">Go90 FOOTBALL CLUB</p>
+           서울특별시 노원구 상계로 64 화랑빌딩 7F <br /> 
+           사업자 번호 : 123-45-6789(등록2023년) &nbsp; 대표 : 호날두<br /> 
+           고객센터:1234-5678 팩스:0123-456-7890 &nbsp; 이메일:naldo@gmail.com <br>
         </div>
-        <div class="ft_right">
-          <p class="ft_tel">가입 문의<br><span>1234-5678</span></p>
-          <ul class="ft_sns">
-            <li><a href="#"><img src="/img/twitter.png" alt="트위터"></a></li>
-            <li><a href="#"><img src="/img/instagram.png" alt="인스타그램"></a></li>
-            <li><a href="#"><img src="/img/facebook.png" alt="페이스북"></a></li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="ft_border">
-        <div id="ft_bot">
-
-        </div>
-      </div>
+            <div class="ft_right">
+              <p class="ft_tel">
+                가입 문의<br><span>1234-5678</span>
+              </p>
+              <ul class="ft_sns">
+                <li><a href="#"><img src="/img/twitter.png" alt="트위터"></a></li>
+                <li><a href="#"><img src="/img/instagram.png" alt="인스타그램"></a></li>
+                <li><a href="#"><img src="/img/facebook.png" alt="페이스북"></a></li>
+              </ul>
+            </div>
+          </div>
+           <div class="ft_border">
+             <div id="ft_bot"></div>
+           </div>
+         </div>
+       </div>
     </div>
-  </div>
-  
-  <!-- 100% 이미지 -->
-  </div>
-   
-<!-- TOP 버튼 -->
-<script>
-$(function(){$(window).scroll(function(){
-    if ($(this).scrollTop() > 400) {$('#ft_top').fadeIn()} 
-    else { $('#ft_top').fadeOut()};});
-});
-$('#ft_top').click(function() {
-    $('html, body').animate({scrollTop:0});
-});
-</script>
 
+    <!-- TOP 버튼 -->
+    <script>
+               $(function() {
+                  $(window).scroll(function() {
+                     if ($(this).scrollTop() > 400) {
+                        $('#ft_top').fadeIn()
+                     } else {
+                        $('#ft_top').fadeOut()
+                     }
+                     ;
+                  });
+               });
+               $('#ft_top').click(function() {
+                  $('html, body').animate({
+                     scrollTop : 0
+                  });
+               });
+               
+               $(function() {
+                  // 폰트 리사이즈 쿠키있으면 실행
+                  font_resize("container",
+                        get_cookie("ck_font_resize_rmv_class"),
+                        get_cookie("ck_font_resize_add_class"));
+               });
+     </script>
 
-
-<script>
-$(function() {
-    // 폰트 리사이즈 쿠키있으면 실행
-    font_resize("container", get_cookie("ck_font_resize_rmv_class"), get_cookie("ck_font_resize_add_class"));
-});
-</script>
-
-</body>
+  </body>
 
 </th:block>
 

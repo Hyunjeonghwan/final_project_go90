@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block
+   th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+
+   <th:block th:fragment="title">
+      <title>글쓰기</title>
+   </th:block>
+
+   <!-- 반응형 구조 만들기 -->
+   <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+
+   <th:block th:fragment="css">
+      <link rel="stylesheet" href="/css/writestyle1.css">
+      <link rel="stylesheet" href="/css/writestyle2.css">
+      <link rel="stylesheet" href="/css/writestyle3.css">
+      <style>
+#sh_content67 {
+   margin: 50px 30px;
+}
+</style>
+   </th:block>
+
+
+   <th:block th:fragment="content">
+
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+         <div id="sh_container_wrapper">
+            <!-- 서브 비주얼영역 -->
+            <div id="sub_main_banner">
+               <div id="sh_content_tit">
+                  <h3>답글</h3>
+                  <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;<img
+                     src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                  글 작성
+               </div>
+            </div>
+            <!-- 서브 비주얼영역 끝 -->
+
+            <!-- 서브메뉴 -->
+            <div id="sh_aside">
+               <div id="sh_aside_wrapper">
+                  <!--  
+                        <ul id="sh_snb">
+                            <li class='l_menu_ON'>
+                                <a href="page6.html">SHINING레져 소개</a>
+                            </li>
+                            <li class='l_menu_OFF'>
+                                <a href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a>
+                            </li>
+                            <li class='l_menu_OFF'>
+                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
+                            </li>
+                        </ul>
+                     -->
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- 상단 메뉴 끝 -->
+
+
+      <div id="sh_container_1150">
+         <!-- ------------------------게시글 작성(js폴더-common68a.js파일 주석처리해야함)------------------------ -->
+         <div id="sh_content67">
+            <!-- skin : lei_write -->
+            <!-- <script> -->
+            <!-- jQuery(function ($) {
+                                $.datepicker.regional["ko"] = {
+                                    closeText: "닫기",
+                                    prevText: "이전달",
+                                    nextText: "다음달",
+                                    currentText: "오늘",
+                                    monthNames: ["1월(JAN)", "2월(FEB)", "3월(MAR)", "4월(APR)", "5월(MAY)", "6월(JUN)", "7월(JUL)", "8월(AUG)", "9월(SEP)", "10월(OCT)", "11월(NOV)", "12월(DEC)"],
+                                    monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                                    dayNames: ["일", "월", "화", "수", "목", "금", "토"],
+                                    dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
+                                    dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
+                                    weekHeader: "Wk",
+                                    dateFormat: "yymmdd",
+                                    firstDay: 0,
+                                    isRTL: false,
+                                    showMonthAfterYear: true,
+                                    yearSuffix: ""
+                                };
+                                $.datepicker.setDefaults($.datepicker.regional["ko"]);
+                            }); -->
+            <!-- </script> -->
+            <section id="sh_bo_w">
+               <form name="fwrite" id="fwrite" autocomplete="off"
+                  th:action="@{/board/reply}" th:object="${articleDTO}"
+                  method="post">
+                  <div id="sh_write_tbl" class="sh_tbl_common">
+                     <table>
+                        <tbody>
+                           <tr>
+                              <th><label for="wr_name">이름</label></th>
+                              <td><input type="text" name="wr_name" value=""
+                                 id="wr_name" class="sh_input" th:field="*{articleWriter}">
+                                 <!-- 남김 --> 
+                                 <input type="hidden" th:value="${param.boardId}"name="boardId" /> 
+                                 <!-- 회원 가져오면 삭제 --> 
+                                 <input type="hidden" value="master" name="memberId"></td>
+
+                           </tr>
+
+                           <tr>
+                              <th><label for="wr_title">제목</label></th>
+                              <td><input type="text" name="wr_title" value=""
+                                 id="wr_title" class="sh_input" style="width: 100%;"
+                                 th:field="*{articleTitle}"></td>
+                           </tr>
+
+                           <tr>
+                              <th><label for="wr_content">내용</label></th>
+                              <td class="wr_content"><textarea id="wr_content"
+                                    name="wr_content" class="smarteditor2" maxlength="65536"
+                                    style="width: 100%; height: 300px"
+                                    th:field="*{articleContent}"></textarea></td>
+                           </tr>
+                           <tr>
+                              <th>파일 #1</th>
+                              <td><label for="sh_file1" class="sound_only">파일
+                                    #1</label> <input type="file" name="bf_file[]"
+                                 title="파일첨부 1 : 용량 1,048,576 바이트 이하만 업로드 가능"
+                                 class="frm_file sh_input" id="sh_file1"></td>
+                           </tr>
+                           <tr>
+                              <th>파일 #2</th>
+                              <td><label for="sh_file2" class="sound_only">파일
+                                    #2</label> <input type="file" name="bf_file[]"
+                                 title="파일첨부 2 : 용량 1,048,576 바이트 이하만 업로드 가능"
+                                 class="frm_file sh_input" id="sh_file2"></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="btn_area">
+                     <input type="submit" value="작성완료" id="btn_submit" accesskey="s"
+                        class="btn_type01 comp_btn"> <a href="#"
+                        class="cancel_btn">취소</a>
+                  </div>
+               </form>
+            </section>
+            <!-- 
+                        <script>
+                            $(function () {
+                                $('#sh_booking_date_start,#sh_booking_date_end').datepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    dateFormat: "yy-mm-dd",
+                                    yearRange: "c-1:c+1",
+                                    maxDate: "+365d",
+                                    minDate: "0d"
+                                });
+                            });
+                            function Num_ck(obj) {
+                                var val = obj.value;
+                                if (isNaN(val)) {
+                                    alert("숫자만 입력해 주세요");
+                                    obj.value = val.replace(/[^0-9]/gi, '');
+                                }
+                            }
+
+                            function fwrite_submit(f) {
+
+                                if (!$("#agree").is(":checked")) {
+                                    alert("개인정보취급방침의 내용에 동의하셔야 작성가능 합니다.");
+                                    return false;
+                                }
+
+                                var wr_content_editor_data = oEditors.getById['wr_content'].getIR();
+                                oEditors.getById['wr_content'].exec('UPDATE_CONTENTS_FIELD', []);
+                                if (jQuery.inArray(document.getElementById('wr_content').value.toLowerCase().replace(/^\s*|\s*$/g, ''), ['&nbsp;', '<p>&nbsp;</p>', '<p><br></p>', '<div><br></div>', '<p></p>', '<br>', '']) != -1) { document.getElementById('wr_content').value = ''; }
+                                if (!wr_content_editor_data || jQuery.inArray(wr_content_editor_data.toLowerCase(), ['&nbsp;', '<p>&nbsp;</p>', '<p><br></p>', '<p></p>', '<br>']) != -1) { alert("내용을 입력해 주십시오."); oEditors.getById['wr_content'].exec('FOCUS'); return false; }
+
+                                var subject = "";
+                                var content = "";
+                                $.ajax({
+                                    url: g5_bbs_url + "/ajax.filter.php",
+                                    type: "POST",
+                                    data: {
+                                        "subject": f.wr_subject.value,
+                                        "content": f.wr_content.value
+                                    },
+                                    dataType: "json",
+                                    async: false,
+                                    cache: false,
+                                    success: function (data, textStatus) {
+                                        subject = data.subject;
+                                        content = data.content;
+                                    }
+                                });
+
+                                if (subject) {
+                                    alert("제목에 금지단어('" + subject + "')가 포함되어있습니다");
+                                    f.wr_subject.focus();
+                                    return false;
+                                }
+
+                                if (content) {
+                                    alert("내용에 금지단어('" + content + "')가 포함되어있습니다");
+                                    if (typeof (ed_wr_content) != "undefined")
+                                        ed_wr_content.returnFalse();
+                                    else
+                                        f.wr_content.focus();
+                                    return false;
+                                }
+
+                                if (document.getElementById("char_count")) {
+                                    if (char_min > 0 || char_max > 0) {
+                                        var cnt = parseInt(check_byte("wr_content", "char_count"));
+                                        if (char_min > 0 && char_min > cnt) {
+                                            alert("내용은 " + char_min + "글자 이상 쓰셔야 합니다.");
+                                            return false;
+                                        }
+                                        else if (char_max > 0 && char_max < cnt) {
+                                            alert("내용은 " + char_max + "글자 이하로 쓰셔야 합니다.");
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                                if (!chk_captcha()) return false;
+
+                                return true;
+                            }
+                        </script> -->
+         </div>
+         <!-- sh_content -->
+      </div>
+      <!-- sh_container_1150 -->
+
+
+
+
+   </th:block>
+
+</th:block>
+
+</html>

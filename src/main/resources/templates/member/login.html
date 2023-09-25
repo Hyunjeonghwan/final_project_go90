@@ -19,6 +19,20 @@
        #sh_content11{
           margin: 50px 30px;
        }
+       
+       .sh_mb_common{
+      	  animation: fadeIn 1.8s ease-in forwards;
+       }
+       
+       
+       @keyframes fadeIn {
+	        from {
+	          opacity: 0; 
+	     	}
+		  	to {
+		      opacity: 1; 
+		  	}
+	   }
     </style>
     </th:block>
 
@@ -79,18 +93,6 @@
             </p>
             <input type="submit" value="로그인">
         </fieldset>
-             <ul>
-            <li><a href="/member/register">회원가입</a></li>
-         <li><a href="password_lost.html" target="_blank" id="login_password_lost">아이디 찾기</a></li>
-            <li><a href="password_lost.html" target="_blank" id="login_password_lost">비밀번호 찾기</a></li>
-        </ul>
-        <div class="bnr">
-           <img src="../skin/member/sh_basic/img/bnr_img.png" alt="홈페이지 제작 현대이지웹" />
-            <div class="txt">
-                <p>현대이지웹 <span>1544-6062</span></p>
-                홈페이지 제작 및 문의
-            </div>
-        </div>
     </form>
 </div>
 

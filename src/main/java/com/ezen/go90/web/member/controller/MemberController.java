@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ezen.go90.domain.match.dto.Participant;
+import com.ezen.go90.domain.match.service.MatchService;
 import com.ezen.go90.domain.member.dto.LoginForm;
 import com.ezen.go90.domain.member.dto.Member;
 import com.ezen.go90.domain.member.service.MemberService;
@@ -43,11 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 사용자 관련 웹 요청을 처리하는 세부 컨트롤러 구현 클래스
  *
- * @author 에너자이조 김기정
- * @since 2023. 9. 4.
- * @version 1.0
- * @see com.ezen.go90.domain.member.service.MemberService
- * @see com.ezen.go90.domain.member.service.MemberServiceImpl
+ * @Project final_project_go90
+ * @Author 현정환, 주성민
+ * @Date 2023. 9. 8.
  */
 @Controller
 @RequiredArgsConstructor
@@ -57,16 +58,12 @@ public class MemberController {
 
    /** 회원 관련 비즈니스 메소드 제공 */
    private final MemberService memberService;
+   private final MatchService matchService;
 
    @Value("${common.uploadPath}")
    private String location;
 
-   /**
-    * 사용자 회원가입 화면 요청 처리
-    * 
-    * @param model 뷰에서 필요한 데이터 저장
-    * @return 뷰의 논리적 이름
-    */
+   /** 사용자 회원가입 화면 요청 처리 */
    @GetMapping("/register")
    public String registerForm(Model model) {
       Member member = Member.builder().build();
@@ -74,16 +71,7 @@ public class MemberController {
       return "member/register";
    }
 
-   /**
-    * 사용자 회원가입 요청 처리 회원 데이터 검증 시 Bean Validation 사용
-    * 
-    * @param @validated         Global Validator 사용 설정
-    * @param member             사용자 입력 정보
-    * @param bindingResult      검증 오류 메시지 설정
-    * @param redirectAttributes 회원 가입 요청 정상 처리 후 리다이렉트 정보 설정
-    * @param model              뷰에서 필요한 데이터 저장
-    * @return 뷰의 논리적 이름
-    */
+   /** 사용자 회원가입 요청 처리 회원 데이터 검증 시 Bean Validation 사용 */
    @PostMapping("/register")
    public String register(@Validated @ModelAttribute Member member, BindingResult bindingResult,
          @RequestParam(value = "memberImg", required = false) MultipartFile memberImg,
@@ -150,22 +138,14 @@ public class MemberController {
    /** 회원 목록 조회 요청 처리 */
    @GetMapping
    public String list(Model model) {
-      List<Member> list = memberService.getMemberList();
-      model.addAttribute("list", list);
-      return "member/list";
-   }
-
-   /** 회원 정보 수정 화면 요청 처리 */
-   @GetMapping("/mypage/edit/{id}")
-   public String editForm(@PathVariable("id") String id, Model model) {
-      Member member = memberService.getMember(id);
+      List<Member> member = memberService.getMemberList();
       model.addAttribute("member", member);
-      return "member/edit";
+      return "member/list";
    }
 
    /** 회원 정보 수정 요청 처리 */
    @PostMapping("/mypage/{memberId}")
-      public String edit(@PathVariable("memberId") String memberId,
+   public String edit(@PathVariable("memberId") String memberId,
                        @ModelAttribute Member member,
                        @RequestParam(value = "uploadImg", required = false) MultipartFile uploadImg) {
       
@@ -183,9 +163,6 @@ public class MemberController {
             // 파일 업로드 실행
             uploadImg.transferTo(upload);
             
-//            member.setMemberImg(fileName);
-
-
          } catch (IOException e) {
             e.printStackTrace();
          }
@@ -203,15 +180,6 @@ public class MemberController {
       model.addAttribute("loginForm", loginForm);
       return "member/login";
    }
-   
-   /**회원 정보 삭제삭제*/
-   @PostMapping("/delete/{memberId}")
-   public String delete(@PathVariable("memberId") String memberId, Model model) {
-      
-      memberService.secession(memberId);
-      
-      return "redirect:/member/logout";
-   }
 
    /** 회원 로그인 요청 처리 */
    @PostMapping("/login")
@@ -224,7 +192,7 @@ public class MemberController {
       }
 
       // 데이터 검증 정상 처리 시
-      Member loginMember = memberService.isMember(loginForm.getLoginId(), loginForm.getPasswd());
+      Member loginMember = memberService.isMember(loginForm.getLoginId(), loginForm.getPasswd(), loginForm.getRank());
 
       // 회원이 아닌 경우
       if (loginMember == null) {
@@ -261,25 +229,26 @@ public class MemberController {
       Member member = memberService.getMember(id);
       return member != null ? true : false;
    }
-
-   /** API 서비스 시 예외 처리를 위한 테스트 */
-//   @GetMapping("/rest/{id}")
-//   @ResponseBody
-//   public Member read(@PathVariable String id) {
-//      // 테스트를 위한 코드
-//      if(id.equals("bangry1")) {
-//         throw new IllegalArgumentException("잘못된 값을 입력하였습니다.");
-//      }
-//      
-//      if(id.equals("bangry2")) {
-//         throw new RuntimeException("서버 장애가 발생하였습니다.");
-//      }
-//      
-//      if(id.equals("bangry3")) {
-//         throw new MemberException("인증되지 않은 사용자입니다.");
-//      }
-//      
-//      return new Member(id, "1111", "looney", "looney@gmail.com", "2023/09/02");
-//   }
+   
+   /**회원 탈퇴*/
+   @PostMapping("/delete/{memberId}")
+   public String delete(@PathVariable("memberId") String memberId, Model model) {
+      
+      memberService.secession(memberId);
+      
+      return "redirect:/member/logout";
+   }
+   
+   /**마이페이지 회원 기록 처리*/
+   @GetMapping("/{memberId}/mystats")
+   public String loadStats(Model model,@PathVariable("memberId")String memberId) {
+      
+      Member member = memberService.getMember(memberId);
+      
+      Map<String, List<Participant>> playerStats = matchService.loadAllHistory(memberId);
+         model.addAttribute("member",member);
+         model.addAttribute("playerStats",playerStats);
+      return "member/mystats";
+   }
 
 }

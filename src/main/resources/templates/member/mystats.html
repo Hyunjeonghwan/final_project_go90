@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block
+	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+
+	<th:block th:fragment="title">
+		<title>경기 기록</title>
+	</th:block>
+
+	<!-- 반응형 구조 만들기 -->
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+
+	<th:block th:fragment="css">
+		<link rel="stylesheet" href="/assets/css/mystats.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script defer src="/assets/js/datachart.js"></script>
+		<style>
+#sh_content78 {
+	margin: 50px 30px;
+}
+</style>
+	</th:block>
+
+
+	<th:block th:fragment="content">
+
+		<!-- 상단 메뉴 시작 -->
+
+		<div id="sh_container">
+			<div id="sh_container_wrapper">
+				<!-- 서브 비주얼영역 -->
+				<div id="sub_main_banner">
+					<div id="sh_content_tit">
+						<h3>마이페이지</h3>
+						<p>
+							<a href="/">HOME</a> &nbsp;&nbsp;&nbsp;<img src="/img/ar.png"
+								alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp; MY PAGE
+						</p>
+					</div>
+				</div>
+				<!-- 서브 비주얼영역 끝 -->
+
+				<!-- 서브메뉴 -->
+				<div id="sh_aside">
+					<div id="sh_aside_wrapper" th:each="member : ${member}">
+						<ul id="sh_snb">
+							<li class='l_menu_OFF'><a href="#" th:href="@{/member/mypage/{memberId}(memberId=${member.memberId})}">마이페이지</a></li>
+							<li class='l_menu_ON'><a href="#">내 스탯</a></li>
+
+						</ul>
+						<!-- 소분류 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 상단 메뉴 끝 -->
+
+
+		<div id="sh_container_1151">
+			<!-- 콘텐츠영역 -->
+			<div id="sh_content78">
+
+				<div class="main-container">
+					<header>
+						<h1>MY STATS</h1>
+					</header>
+					<div class="user-info">
+				
+						<!-- =====================카드 영역===============================================================-->
+						<div class="card-contain" draggable="false">
+                     <canvas id="modelCanvas"></canvas>
+                     <div class="card-container" th:each="member : ${member}">
+                        <div class="top-box">
+                           <div class="top-box-text">
+                              <span class="backNumber"
+                                 th:text="'No.' + ${member.backnumber}">No.10</span> <span
+                                 class="position" th:text="${member.position}">FW</span>
+                           </div>
+                        </div>
+                        <div class="image-box">
+                           <img class="thumbnail"
+                              th:src="@{'/member/profile/' +${member.memberImg}}"
+                              alt="user-profile" draggable="false">
+                           <!--  src="/assets/img/no1.png"  -->
+                        </div>
+                        <div class="main-box">
+                           <div class="user-info">
+                              <span class="name" th:text="${member.name}">김기정</span>
+                           </div>
+                        </div>
+                        <!--     <img class="circle-2" src="/assets/img/ball.jpg" alt=""
+                           draggable="false" />-->
+                     </div>
+                     <canvas id="modelCanvas2"></canvas>
+                  </div>
+				<!-- =====================카드 영역===============================================================-->
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+			<div class="chart-container">
+				<div class="chart">
+					<canvas id="scoreChart"></canvas>
+				</div>
+				<div class="chart">
+					<canvas id="matchScoreChart"></canvas>
+				</div>
+				<div class="chart">
+					<canvas id="pieChart"></canvas>
+				</div>
+			</div>
+
+			<div class="user-stats">
+				<h2>MY STATS</h2>
+
+				<!-- playerStats 맵 순회 -->
+				<th:block th:each="entry : ${playerStats}">
+					<!-- 현재 항목의 key를 matchId로 가져옴 -->
+					<th:block th:with="matchId=${entry.key}">
+						<div class="match-container">
+							<div class="match-header"  th:onclick="xxx([[${matchId}]])">
+								<!-- matchId에 해당하는 matchDate, team, opponent 가져와 출력 -->
+								<p class="first-line" th:text="${entry.value[0].matchDate}">2023/09/08</p>
+								<p class="second-line"
+									th:text="${entry.value[0].team} + ' VS ' + ${entry.value[0].opponent}">
+									이젠 FC <span>VS</span> 아카데미 FC
+								</p>
+								<input type="hidden" th:value="${matchId}">
+							</div>
+							<table class="stats-table">
+								<thead>
+									<tr>
+										<!-- 테이블 헤더 -->
+										<th>쿼터</th>
+										<th>득점</th>
+										<th>도움</th>
+										<th>태클</th>
+										<th>세이브</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- 플레이어 기록 테이블 행 순회 -->
+									<tr th:each="playerStat : ${entry.value}">
+										<td th:text="${playerStat.quarterName}">1쿼터</td>
+										<td th:text="${playerStat.goal}">2</td>
+										<td th:text="${playerStat.assist}">1</td>
+										<td th:text="${playerStat.tackle}">3</td>
+										<td th:text="${playerStat.save}">0</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</th:block>
+				</th:block>
+
+			</div>
+			<!--main container end-->
+
+
+
+		</div>
+		<!-- sh_content -->
+		</div>
+		<!-- sh_container_1150 -->
+	</th:block>
+
+</th:block>
+
+<script>
+function xxx(matchId){
+	alert(matchId);
+}
+
+
+</script>
+
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
+        "GLTFLoader" : "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+      }
+    }
+</script>
+
+<script type="module">
+  import {GLTFLoader} from 'GLTFLoader';
+  import * as THREE from 'three';
+
+  let scene = new THREE.Scene();
+  let renderer = new THREE.WebGLRenderer({
+    canvas : document.querySelector('#modelCanvas'),
+    antialias : true
+  });
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  let camera = new THREE.PerspectiveCamera(70,1);
+  camera.position.set(0,20,50);
+  scene.background = new THREE.Color('white');
+
+
+  let lightPosition = new THREE.Vector3(0, 120, 20); // 원하는 위치로 조명
+let pointLight = new THREE.PointLight('white', 10);
+pointLight.position.copy(lightPosition);
+scene.add(pointLight);
+let sunlight = new THREE.DirectionalLight('#FFF', 5);
+sunlight.position.set(0, 10, 15);
+scene.add(sunlight);
+
+  let loader = new GLTFLoader();
+  loader.load('/assets/model/worldcup/scene.gltf',function(gltf){
+    scene.add(gltf.scene);
+    function animate(){
+      requestAnimationFrame(animate)
+      gltf.scene.rotation.y +=0.05;
+      // gltf.scene.rotation.x +=0.5;
+
+      renderer.render(scene,camera);
+    }
+    animate();
+
+
+  });
+  
+
+   
+  let scene2 = new THREE.Scene();
+  let renderer2 = new THREE.WebGLRenderer({
+    canvas : document.querySelector('#modelCanvas2'),
+    antialias : true
+  });
+  renderer2.outputEncoding = THREE.sRGBEncoding;
+
+  let camera2 = new THREE.PerspectiveCamera(70,1);
+  camera2.position.set(0,20,50);
+  scene2.background = new THREE.Color('white');
+
+
+  let lightPosition2 = new THREE.Vector3(0, 120, 20); // 원하는 위치로 조명
+let pointLight2 = new THREE.PointLight('white', 10);
+pointLight2.position.copy(lightPosition);
+scene2.add(pointLight2);
+let sunlight2 = new THREE.DirectionalLight('#FFF', 5);
+sunlight2.position.set(0, 10, 15);
+scene2.add(sunlight2);
+
+  let loader2 = new GLTFLoader();
+  loader2.load('/assets/model/worldcup/scene.gltf',function(gltf){
+    scene2.add(gltf.scene);
+    function animate2(){
+      requestAnimationFrame(animate2)
+      gltf.scene.rotation.y +=0.05;
+      // gltf.scene.rotation.x +=0.5;
+
+      renderer2.render(scene2,camera2);
+    }
+    animate2();
+
+
+  });
+
+
+
+</script>
+
+
+
+
+
+</html>

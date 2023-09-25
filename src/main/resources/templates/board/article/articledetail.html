@@ -1,48 +1,121 @@
 <!DOCTYPE HTML>
-<html  xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
-<th:block
-	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+<th:block th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+   <th:block th:fragment="title">
+      <title>글쓰기</title>
+   </th:block>
 
-	<th:block th:fragment="title">
-			<title>글쓰기</title>
-	</th:block>
+   <!-- 반응형 구조 만들기 -->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 
-    <!-- 반응형 구조 만들기 -->
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+   <th:block th:fragment="css">
+      <link rel="stylesheet" href="/css/articlestyle1.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+      
+      <style>
+		#sh_content897 {
+		   margin: 50px 30px;
+		}
+		
+		.comment-list-title {
+		    font-size: 18px; 
+		    font-weight: bold; 
+		    color: #333; 
+		    display: flex; 
+		    align-items: center; 
+		    margin-bottom: 20px; 
+		}
+		
+		.comment-icon {
+		    font-size: 30px;
+		    margin-right: 10px;
+		}
+		
+		 .comment-item {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+  	   }
+	
+	    .comment-item p {
+	        font-size: 14px;
+	        margin: 5px 0;
+	    }
+	
+	    #comment-form {
+	        margin-top: 20px;
+	    }
+	
+	    .comment-input-container {
+	        margin-bottom: 10px;
+	    }
+	
+	    #reply-writer {
+	        font-size: 14px;
+	        width: 100%;
+	        padding: 10px;
+	        background-color: #f0f0f0;
+	        border: 1px solid #ccc;
+	    }
+	
+	    #reply-content {
+	        font-size: 14px;
+	        width: 100%;
+	        height: 100px;
+	        padding: 10px;
+	        background-color: #f0f0f0;
+	        border: 1px solid #ccc;
+	    }
+	
+	    #submit-comment {
+	        font-size: 14px;
+	        background-color: #6c757d;
+	        color: #fff;
+	        border: none;
+	        padding: 10px 20px;
+	        cursor: pointer;
+	    }
+	
+	    #submit-comment:hover {
+	        background-color: #5a6268;
+	    }
+	    
+	    .comment-list-container {
+		    background-color: #f9f9f9;
+		    border: 1px solid #e5e5e5;
+		    border-radius: 5px;
+		    padding: 20px;
+		    margin-top: 20px;
+		    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+	  </style>
+	  
+   </th:block>
 
+   <th:block th:fragment="content">
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+         <div id="sh_container_wrapper">
+            <!-- 서브 비주얼영역 -->
+            <div id="sub_main_banner">
+               <div id="sh_content_tit">
+                  <h3>글 상세보기</h3>
+                  <p>
+                     <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;
+                     <img src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                     글 상세보기
+                  </p>
+               </div>
+            </div>
+            <!-- 서브 비주얼영역 끝 -->
 
-	<th:block th:fragment="css">
-	<link rel="stylesheet" href="/css/articlestyle1.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-    	#sh_content897{
-    		margin: 50px 30px;
-    	}
-    </style>
-    </th:block>
-
-   
-<th:block th:fragment="content">
-
-<!-- 상단 메뉴 시작 -->
-<div id="sh_container">
-            <div id="sh_container_wrapper">
-                <!-- 서브 비주얼영역 -->
-                <div id="sub_main_banner">
-                    <div id="sh_content_tit">
-                        <h3>글 작성</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
-                    </div>
-                </div>
-                <!-- 서브 비주얼영역 끝 -->
-
-                <!-- 서브메뉴 -->
-                <div id="sh_aside">
-                    <div id="sh_aside_wrapper">
-                        <ul id="sh_snb">
+            <!-- 서브메뉴 -->
+            <div id="sh_aside">
+               <div id="sh_aside_wrapper">
+                  <!-- <ul id="sh_snb">
                             <li class='l_menu_ON'>
                                 <a href="page6.html">SHINING레져 소개</a>
                             </li>
@@ -52,72 +125,170 @@
                             <li class='l_menu_OFF'>
                                 <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
                             </li>
-                        </ul>
-                        <!-- 소분류 끝 -->
-                    </div>
-                </div>
-                </div>
-                </div>
-                
-<!-- 상단 메뉴 끝 -->
-
-
-         <div id="sh_container_1150">
-      <!-- 콘텐츠영역 -->
-      <div id="sh_content897">
-   
-<section id="sh_bo_v">
-   <p class="tit">
-              샤이닝에서 인원을 채용합니다.   </p>
-    
-    <div class="info">
-       <p><b>작성자</b><span class="sv_member">최고관리자</span></p>
-        <ul>
-            <li><b>등록일</b> 18-08-24</li>      
-            <li><b>조회</b>953회</li>
-        </ul>
-    </div>
-    
-   <ul class="bo_ul">
-                                 
-           </ul>
-    
-    <div id="bo_v_atc" class="bo_cont">
-        <p class="sound_only">본문</p>
-        
-      <div id="bo_v_img">
-</div>
-      <p><span style="color:rgb(102,102,102);font-family:'Nanum Gothic';">샤이닝에서 인원을 채용합니다.</span> </p>    </div>
-
-        
-            
-    
-       <ul class="v_page">
-                <li><span><i class="fa fa-angle-down"></i></span><a href="board1eef.html?bo_table=table18&amp;wr_id=1">새롭게 홈페이지를 오픈하였습니다!</a></li>    </ul>
-    
-    <div class="btn_area">
-                <ul class="left">
-                                </ul>
-        <ul class="right">
-            <li><a href="boardfe75.html?bo_table=table18&amp;page=" class="btn_line"> 목록</a></li>
-                             </ul>
+                        </ul> -->
+                  <!-- 소분류 끝 -->
+               </div>
             </div>
-    
-</section>
+         </div>
+      </div>
+      <!-- 상단 메뉴 끝 -->
 
-<script>
-$(function() {
-    // 이미지 리사이즈
-    $("#bo_v_atc").viewimageresize();
-});
-</script>
-          </div><!-- sh_content -->
-        </div> <!-- sh_container_1150 -->
+      <div id="sh_container_1150">
+         <!-- 콘텐츠영역 -->
+         <div id="sh_content897">
+            <section id="sh_bo_v">
+               <p class="tit" th:text="${article.articleTitle}">게시글 제목</p>
+               <div class="info">
+                  <p>
+                     <b>작성자</b>
+                     <span class="sv_member" th:text="${article.articleWriter}">작성자명</span>
+                  </p>
+                  <ul>
+                     <li>
+                       <b>등록일</b>
+                       <span class="sv_member" th:text="${article.articleRegdate}">18-08-24</span>
+                     </li>
+                     <li>
+                       <b>조회수</b>
+                       <span class="sv_member" th:text="${article.hitcount}">953</span>
+                     </li>
+                  </ul>
+               </div>
 
+               <div id="bo_v_atc" class="bo_cont">
+                  <p class="sound_only">본문</p>
+                  <p>
+                     <span th:text="${article.articleContent}" style="color: rgb(102, 102, 102); font-family: 'Nanum Gothic';">본문</span> 
+                  </p>
+               </div>
 
+            <!--  댓글 영역  -->
+				<div class="comment-list-container">
+				 <div class="comment-list-title">
+				    <i class="fas fa-comment-dots comment-icon"></i>
+				    <span>댓글 리스트</span>
+				 </div>
+				    <ul>
+				       <li>
+			            <!-- 댓글 목록 표시 구간 -->
+			            <div id="comment-list">
+			                <!-- Thymeleaf 반복문으로 댓글 목록 생성 -->
+			                <th:block th:each="replyDto : ${article.replyList}">
+			                    <div class="comment-item">
+			                        <strong><p th:text="${'[ '+ '작성자 ID : ' + replyDto.replyWriter + ' ]'}"></p></strong>
+			                        <p th:text="${replyDto.replyContent}"></p>
+			                    </div>
+			                </th:block>
+			            </div> 
+			            <!-- 댓글 작성 구간 -->
+			            <!-- 댓글 작성 폼 -->
+			            <form id="comment-form" autocomplete="off" th:object="${replyDTO}" method="post">
+			                <div class="comment-input-container">
+			                    <input type="hidden" id="reply-writer" th:value="${session.loginMember.memberId}" readonly>
+			                </div>
+			                <label for="wr_content"><strong>댓글</strong></label>
+			                <div class="comment-input-container">
+			                    <textarea id="reply-content" class="smarteditor2" placeholder="댓글을 입력하세요."
+			                     maxlength="65536" style="font-size: 14px;"></textarea>
+			                    <input type="hidden" id="article-id" th:attr="data-article-id=${articleId}" />
+			                    <input type="hidden" id="order-no" th:attr="data-order-no=${orderNo}" />
+			                    <input type="hidden" id="reply-regdate" th:attr="data-reply-regdate=${replyRegdate}" />
+			                    <input type="hidden" id="level-no" th:attr="data-level-no=${levelNo}" />
+			                    <!-- 댓글 작성 버튼 -->
+			                    <button id="submit-comment" type="submit">댓글 작성</button>
+			                </div>
+			            </form>
+			        </li>
+			    </ul>
+			</div>
+		 <!--  댓글 영역 끝  -->
+		 
+               <div class="btn_area">
+                  <ul class="left">
+                     <li>
+                     	<a href="#" th:href="@{'/board/' + ${article.boardId}}" class="btn_line"> 목록</a>
+                     </li>
+                  </ul>
+                  <ul class="right">
+                     <li th:if="${canEdit}">
+                     	<a href="#" th:href="@{'/board/updatewrite/' + ${article.boardId} + '/' + ${article.articleId}}" class="btn_line"> 수정</a>
+                     </li>
+                     <li th:if="${canEdit}">
+                     	<a href="#" th:href="@{/board/delete/{articleId}(articleId=${article.articleId})}" class="btn_line"> 삭제</a>
+                     </li>
+                  </ul>
+               </div>
+         
+       </section>
 
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-</th:block>
+            <script>
+               $(function() {
+                  // 이미지 리사이즈
+                  $("#bo_v_atc").viewimageresize();
+               });
+            </script>
+
+            <script>
+               $(document).ready(function() {
+                      // 댓글 작성 버튼 클릭 이벤트 처리
+                      $("#comment-form").submit(function(event) {
+                            event.preventDefault();
+                            // 댓글 내용,작성자 가져오기
+                            var replyContent = $("#reply-content").val();
+                            var replyWriter = $( "#reply-writer").val();
+
+                            // articleId값을 동적으로 가져오기
+                            var articleId = $("#article-id").data("article-id");
+                            var replyRegdate = $("#reply-regdate").data("reply-regdate");
+                            var orderNo = $("#order-no").data("order-no");
+                            var levelNo = $("#level-no").data("level-no");
+
+                            // replyDTO 객체에 articleId 등 설정
+                            var replyDTO = {
+                               articleId : articleId,
+                               replyWriter : replyWriter,
+                               replyRegdate : replyRegdate,
+                               replyContent : replyContent,
+                               orderNo : orderNo,
+                               levelNo : levelNo
+                            };
+
+                                // Ajax 요청 설정
+                                $.ajax({
+                               	 url : `/board/details/${replyDTO.articleId}`, // 서버url 엔드포인트 경로 설정
+                                    type : "POST",
+                                    data : JSON.stringify(replyDTO), // 댓글 내용을 JSON으로 전송
+                                    contentType : "application/json",
+                                    success : function(data) {
+                                    	var newComment = '<div class="comment-item" style=" margin: 10px 0px; font-size: 12px; margin-bottom:11px;">' +
+                                        '<p>'+'<strong>[ 작성자 ID : ' + data.replyWriter + ' ]</strong>' + '</p>' +
+                                        '<p>' + data.replyContent + '</p>' +
+                                        '</div>';
+                                        
+                                        // 새로운 댓글을 맨 위로 추가
+                                        $("#comment-list").prepend(newComment);
+
+                                       // 댓글 작성 후 입력 필드 비우기
+                                       $("#reply-content").val("");
+                                       $("#reply-writer").val("");
+                                    },
+                                    error : function() {
+                                       // 댓글 작성 실패 시
+                                       alert("도배하지마세요.");
+                                    }
+                                 });
+                 	       });
+       			     });
+            </script>
+
+         </div>
+         <!-- sh_content -->
+      </div>
+      <!-- sh_container_1150 -->
+
+   </th:block>
 
 </th:block>
 

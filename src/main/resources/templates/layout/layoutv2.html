@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html  xmlns:th="http://www.thymeleaf.org" lang="ko">
-
 <th:block th:fragment="setContent(title, content, css)">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
   <th:block th:replace="${title}">
      <title>기본 타이틀</title>
   </th:block>
   
 <!-- 상단 css -->
-
 <link rel="stylesheet" href="/css/headerstyle1.css">
 <link rel="stylesheet" href="/css/headerstyle2.css">
 <link rel="stylesheet" href="/css/headerstyle3.css">
@@ -23,13 +20,10 @@
 <link rel="stylesheet" href="/css/font-awesome.min.css">
 
 <!-- 하단 css -->
-
 <link rel="stylesheet" href="/css/footerstyle1.css">
 <link rel="stylesheet" href="/css/footerstyle2.css">
 
-
-
-
+<!-- 스크립트 -->
 <script src="/js/jquery-1.8.3.min.js"></script>
 <script src="/js/jquery-ui.js"></script>
 <script src="/js/jquery.menua68a.js"></script>
@@ -39,11 +33,15 @@
 <script src="/js/scripta68a.js"></script>
 
 <th:block th:replace="${css}">
+<style>
+	#top_nav ul li a {
+		background:rgba(0,0,0,0) !important;
+		color:white !important;
+	}
+</style>
+</th:block>
 </head>
 <body>
-
-
-
 <div>
 <!-- 100% 배경이미지 때문에 사용 -->
 <div id="sh_wrapper" style="min-width:1150px"></div>
@@ -56,12 +54,12 @@
 <!-- 팝업레이어 시작 { -->
 <div id="hd_pop">
     <h2>팝업레이어 알림</h2>
-
 <span class="sound_only">팝업레이어 알림이 없습니다.</span></div>
+<!-- } 팝업레이어 끝 -->    
 
-<!-- } 팝업레이어 끝 -->    <div id="sh_hd_wrapper" style="height:92px">
-      
+<div id="sh_hd_wrapper" style="height:92px">
 <div id="top_nav_wrap">
+
     <!-- 메뉴 전체보기 버튼 -->
     <div id="allmn_btn_wrap"><div id="allmn_btn"><span></span></div></div>
    <!-- 로고 -->
@@ -71,50 +69,52 @@
 
    <!-- 상단메뉴 -->
     <ul id="top_nav">
-                <li class="list list01">
-            <a href="sh_page/page6.html">CLUB</a>
-            <ul class="sub_ul1">
-                                <li><a href="sh_page/page6.html">클럽 소개</a></li>
-                                <li><a href="bbs/board34fb.html?bo_table=table7">회원 소개</a></li>
-                                <li><a href="bbs/board9208.html?bo_table=table8">오시는길</a></li>
-                            </ul>
-        </li>
-                <li class="list list02">
-            <a href="sh_page/page10.html">SCHEDULE</a>
-            <ul class="sub_ul2">
-                                <li><a href="sh_page/page10.html">클럽 일정</a></li>
-                            </ul>
-        </li>
-                <li class="list list03">
-            <a href="bbs/board8399.html?bo_table=table13">COMMUNITY</a>
-            <ul class="sub_ul3">
-                                <li><a href="bbs/board6182.html?bo_table=table15">자유게시판</a></li>
-                                <li><a href="bbs/board8399.html?bo_table=table13">갤러리</a></li>
-                                <li><a href="bbs/boardb73f.html?bo_table=table24">경기 참여 조사</a></li>
-                            </ul>
-        </li>
-                <li class="list list04">
-            <a href="bbs/board6182.html?bo_table=table15">공지 & 문의</a>
-            <ul class="sub_ul4">
-                                <li><a href="bbs/board6182.html?bo_table=table15">공지사항</a></li>
-                                <li><a href="bbs/boardcba7.html?bo_table=table27">문의게시판</a></li>
-                            </ul>
-        </li>
-                <li class="list list05">
-            <a href="index.html">팀 관리</a>
-            <ul class="sub_ul5">
-                                <li><a href="sh_page/page10.html">전술 관리</a></li>
-                            </ul>
-        </li>
-            </ul>
-           <div id="login_all">
-             
-                <a th:if="${session.loginMember} == null" th:href="@{/member/login}">LOGIN</a>
-                <a th:if="${session.loginMember} != null" th:text="|${session.loginMember.name}님 즐거운 하루 되세요|"></a>
-                <a th:if="${session.loginMember} != null" th:href="|@{/member/mypage/}${session.loginMember.memberId}|">MY PAGE</a>
-                <a th:if="${session.loginMember} == null" th:href="@{/member/register}">JOIN US</a>
-                <a th:if="${session.loginMember} != null" th:href="@{/member/logout}">로그아웃</a>
-            </div>
+      <li class="list list01">
+        <a>CLUB</a>
+          <ul class="sub_ul1">
+            <li><a href="/club">클럽 소개</a></li>
+            <li><a href="/member">회원 소개</a></li>
+            <li><a href="/map">오시는길</a></li>
+          </ul>
+      </li>
+          <li class="list list02">
+            <a>SCHEDULE</a>
+             <ul class="sub_ul2">
+              <li><a href="/schedule/plan">클럽 일정</a></li>
+              <li><a href="/vote">경기 참여 조사</a></li>
+             </ul>
+           </li>
+
+             <li class="list list03">
+               <a>COMMUNITY</a>
+                 <ul class="sub_ul3">
+                  <li><a th:href="@{/board/{boardId}(boardId=4)}">자유게시판</a></li>
+                  <li><a th:href="@{/board/{boardId}(boardId=3)}">갤러리</a></li>
+                 </ul>
+             </li>
+             <li class="list list04">
+              <a>공지 & 문의</a>
+                 <ul class="sub_ul4">
+                  <li><a th:href="@{/board/{boardId}(boardId=1)}">공지사항</a></li>
+                  <li><a th:href="@{/board/{boardId}(boardId=2)}">문의게시판</a></li>
+                 </ul>
+              </li>
+            <li class="list list05">
+              <a>팀 관리</a>
+                <ul class="sub_ul5">
+                 <li><a th:href="@{/myteam}">전술 관리</a></li>
+                </ul>
+            </li>
+    </ul>
+
+    <!-- 로그인 -->
+    <div id="login_all">
+      <a th:if="${session.loginMember} == null" th:href="@{/member/login}">LOGIN</a>
+      <a th:if="${session.loginMember} != null" th:text="|${session.loginMember.name}님 즐거운 하루 되세요|"></a>
+      <a th:if="${session.loginMember} != null" th:href="|@{/member/mypage/}${session.loginMember.memberId}|">MY PAGE</a>
+      <a th:if="${session.loginMember} == null" th:href="@{/member/register}">JOIN US</a>
+      <a th:if="${session.loginMember} != null" th:href="@{/member/logout}">로그아웃</a>
+    </div>
 </div>
 <!-- 소분류 끝 -->
 
@@ -123,56 +123,46 @@
     <div id="allmn_view">
            
         <ul class="listx1">
-            <li><a href="sh_page/page6.html">클럽 소개</a></li>
-            <li><a href="bbs/board34fb.html?bo_table=table7">회원 소개</a></li>
-            <li><a href="bbs/board9208.html?bo_table=table8">오시는길</a></li>
-                    </ul>
+            <li><a href="/club">클럽 소개</a></li>
+            <li><a href="/member">회원소개</a></li>
+            <li><a href="/map">오시는길</a></li>
+        </ul>
            
         <ul class="listx2">
-            <li><a href="sh_page/page10.html">클럽 일정</a></li>
-                    </ul>
+            <li><a href="/schedule/plan">클럽 일정</a></li>
+            <li><a href="/vote">경기 참여 조사</a></li>
+         </ul>
            
         <ul class="listx3">
-            <li><a href="bbs/board6182.html?bo_table=table15">자유게시판</a></li>
-            <li><a href="bbs/board8399.html?bo_table=table13">갤러리</a></li>
-            <li><a href="bbs/boardb73f.html?bo_table=table24">경기 참여 조사</a></li>
-                    </ul>
+            <li><a th:href="@{/board/{boardId}(boardId=4)}">자유게시판</a></li>
+            <li><a th:href="@{/board/{boardId}(boardId=3)}">갤러리</a></li>
+        </ul>
            
         <ul class="listx4">
-            <li><a href="bbs/board6182.html?bo_table=table15">공지사항</a></li>
-            <li><a href="bbs/boardcba7.html?bo_table=table27">문의게시판</a></li>
-                    </ul>
+          <li><a th:href="@{/board/{boardId}(boardId=1)}">공지사항</a></li>
+          <li><a th:href="@{/board/{boardId}(boardId=2)}">문의게시판</a></li>
+        </ul>
            
         <ul class="listx5">
-            <li><a href="sh_page/page10.html">전술 관리</a></li>
-                    </ul>
+            <li><a th:href="@{/myteam}">전술 관리</a></li>
+        </ul>
           
     </div>
 </div>   
-   </div>
 </div>
-
+</div>
 
 <div id="sh_container">
     <div id="sh_container_wrapper">
         <!-- 서브 비주얼영역 -->
-      <div id="sub_main_banner">
-        
-        
-            
-        
-        
-  </div>     
-  </div>
-  </div>
+       <div id="sub_main_banner"></div>     
+    </div>
+</div>
 
 <!-- 상단 끝 -->
 <th:block th:replace="${content}">
 </th:block>
 </div>
-
-
-
 
 
 <div id="sh_ft">
@@ -186,21 +176,18 @@
           서울특별시 노원구 상계로 64 화랑빌딩 7F <br />
           사업자 번호 : 123-45-6789(등록2023년) &nbsp; 대표 : 호날두<br />
           고객센터:1234-5678 팩스:0123-456-7890 &nbsp; 이메일:naldo@gmail.com <br>
-
         </div>
         <div class="ft_right">
           <p class="ft_tel">가입 문의<br><span>1234-5678</span></p>
           <ul class="ft_sns">
-            <li><a href="#"><img src="img/twitter.png" alt="트위터"></a></li>
-            <li><a href="#"><img src="img/instagram.png" alt="인스타그램"></a></li>
-            <li><a href="#"><img src="img/facebook.png" alt="페이스북"></a></li>
+            <li><a href="#"><img src="/img/twitter.png" alt="트위터"></a></li>
+            <li><a href="#"><img src="/img/instagram.png" alt="인스타그램"></a></li>
+            <li><a href="#"><img src="/img/facebook.png" alt="페이스북"></a></li>
           </ul>
         </div>
-
       </div>
       <div class="ft_border">
         <div id="ft_bot">
-
         </div>
       </div>
     </div>

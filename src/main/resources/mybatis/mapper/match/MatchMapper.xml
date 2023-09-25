@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 네임스페이스 -->
+<mapper namespace="com.ezen.go90.domain.match.mapper.MatchMapper">        
+
+ <!--   선수 기록 가져오기 -->
+   <select id="loadPlayerStat" parameterType="string" resultType="Participant">
+	SELECT m.match_id, 
+	p.participant_id,
+		   m.team, 
+		   m.opponent,
+		   m.result,
+		   q.quarter_result, 
+		   q.quarter_id,
+		   q.quarter_name,
+		   mem.member_id,
+		   mem.name, 
+		   mem.position, 
+		   mem.back_number,
+		   p.goal,
+		   p.assist,
+		   p.tackle, 
+		   p.save,
+		   TO_CHAR(m.match_date, '""YYYY"년 "MM"월 "DD"일"')match_date
+	FROM participant p
+    	JOIN quarter q 
+      	  ON p.quarter_id = q.quarter_id
+   		JOIN match m 
+     	  ON q.match_id = m.match_id
+    	JOIN member mem
+        	ON p.member_id = mem.member_id
+  	WHERE mem.member_id  = #{memberId} 
+  	ORDER BY q.quarter_name
+   </select>
+
+
+<!-- 경기에서 모든 정보 가져오기  -->
+<select id="loadAllHistory" parameterType="Participant" resultType="Participant">
+	 SELECT
+	    TO_CHAR(m.match_date, '""YYYY"년 "MM"월 "DD"일"')match_date,
+	    m.match_id,
+	    q.quarter_id,
+	    m.team,
+	    m.opponent,
+	    m.team_match_score,
+	    m.opponent_match_score,
+	    m.result,
+	    q.quarter_name,
+	    q.team_quarter_score,
+	    q.opponent_quarter_score,
+	    q.quarter_result,   
+	    p.member_id,
+	    mem.name,
+	    mem.position,
+	    mem.back_number,
+	    p.goal,
+	    p.assist,
+	    p.tackle,
+	    p.save
+	FROM participant p
+   		JOIN quarter q 
+       	 	ON p.quarter_id = q.quarter_id
+    	JOIN match m 
+        	ON q.match_id = m.match_id
+    	JOIN member mem
+        	ON p.member_id = mem.member_id
+      <where>
+ 		<if test="matchId != null">m.match_id = #{matchId}</if>
+        <if test="memberId != null"> OR p.member_id = #{memberId}</if>
+   </where>
+     
+   </select>
+
+      
+
+  <!--경기 정보 가져오기-->
+<select id="loadMatchHistory" resultType="Participant">
+	 SELECT 
+	 		match_id,
+	 		team,
+	 		opponent,
+	 		result,
+	 		TO_CHAR(match_date, '""YYYY"년 "MM"월 "DD"일"')match_date,
+	 		team_match_score,
+	 		opponent_match_score
+	 FROM match
+	 ORDER BY match_date DESC
+   </select>
+
+
+</mapper>     

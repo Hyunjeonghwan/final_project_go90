@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 서비스 객체 로그 Aspect 구현
  *
- * @author  에너자이조 김기정
+ * @author  
  * @since   2023. 9. 4.
  * @version 1.0
  */
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoggerAspect {
 	
-	@Around("execution(* com.ezen.springmvc.domain..*(..))")
+	@Around("execution(* com.ezen.ggg.domain..*(..))")
 	public Object aroundLog(ProceedingJoinPoint joinPoint) {
 		Object obj = null;
 		String className = joinPoint.getTarget().getClass().getName();

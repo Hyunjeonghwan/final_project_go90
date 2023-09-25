@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 
+ * @Project final_project_go90
+ * @Author 현정환, 주성민
+ * @Date 2023. 9. 11.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

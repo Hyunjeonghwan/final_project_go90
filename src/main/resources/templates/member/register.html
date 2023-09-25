@@ -21,11 +21,11 @@
     <script>
         $(function () {
             $("#datepicker").datepicker({
-            	changeMonth: true,
-            	changeYear: true,
-            	maxDate: -1,
-            	dateFormat: "yy-mm-dd",
-            	monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 텍스트
+               changeMonth: true,
+               changeYear: true,
+               maxDate: -1,
+               dateFormat: "yy-mm-dd",
+               monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 텍스트
                 monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 Tooltip
                 dayNamesMin: ['일','월','화','수','목','금','토'],
                 showMonthAfterYear:true
@@ -175,7 +175,7 @@
                                         <input type="text" name="mb_id" value="" id="reg_mb_id" required  th:field="*{memberId}"
                                             class="sh_input required " minlength="3" maxlength="20" placeholder="아이디">
                                         <span id="msg_mb_id"></span>
-                                        <p class="sh_info">영문자, 숫자, _ 만 입력 가능. 최소 3자이상 입력하세요.</p>
+                                        <p class="sh_info">영문자, 숫자, _ 만 입력 가능. 최소 4자이상 입력하세요.</p>
                                     </li>
                                     <li>
                                         <label for="reg_mb_password" class="sound_only" th:text="#{member.label.passwd}">비밀번호<strong
@@ -209,7 +209,7 @@
                                     </li>
 
                                     <li>
-                                        <label for="reg_mb_email" class="sound_only">E-mail<strong>필수</strong></label>
+                                        <label for="reg_mb_email" class="sound_only">E-mail</label>
 
                                         <input type="hidden" name="old_email" value="">
                                         <input type="text" name="mb_email" value="" id="reg_mb_email" required th:field="*{email}"
@@ -219,16 +219,17 @@
                                     </li>
                                     
                                     <li>
-                                        <label for="datepicker" class="sound_only">생년월일</label>
+                                        <label for="datepicker" class="">생년월일</label>
                                         <input type="text" id="datepicker" name="mb_date" value="" required th:field="*{birth}"
                                             class="sh_input required " placeholder="생년월일">
-
-
+                                        
                                     </li>
 
 
                                     <li>
-
+ 										<label for="" class="">부여받으신 코드를 입력하세요</label>
+                                        <input type="text"   th:field="*{rank}"
+                                            class="sh_input " placeholder="회원코드">
                                     </li>
 
 

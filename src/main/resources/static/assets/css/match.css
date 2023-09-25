@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.8); 
+  overflow: auto;
+}
+
+/* 배경 이미지 추가 */
+body::after {
+  content: '';
+  background-image: url(/assets/img/background.jpg);
+  opacity: 0.5; /* 이미지의 투명도를 조절할 수 있습니다. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* 배경 이미지를 콘텐츠 뒤에 배치합니다. */
+  pointer-events: none; /* 배경 이미지에 대한 이벤트를 무시합니다. */
+}
+
+
+
+.list-container{
+	justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.table-container {
+   background:rgba(87, 123, 93, 0.194);
+  margin: 0 auto;
+  margin-top:0%;
+  width: 70vw;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  transform: translateY(80vh);
+  animation: slide-up 1.5s ease-in-out forwards;
+  padding:50px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  background:#fff;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+td a{
+	text-decoration: none;
+	color:#000;
+}
+td:hover{
+	background:#cecccc;
+}
+thead {
+  background-color: #f2f2f2;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(280%); /* 시작 위치: 아래로 밀어내기 */
+  }
+  100% {
+    transform: translateY(65%); /* 최종 위치: 가운데로 이동 */
+  }  
+}
+@keyframes rotate {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+
+/* ===========0915 디자인 수정========= */
+.header {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  width: 30vw;
+}
+.header .header-text{
+	white-space:nowrap;
+  display: inline-block;
+  text-align:center;
+  width:500px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  background:rgba(255, 255, 255, 0.083);
+  border-radius: 5px;
+  padding:10px;
+  font-size: 2em;
+  font-weight: bolder;
+  color: #f0f0f0;
+}
+.second-header{
+  display:block;
+ 
+}
+
+
+.logo{
+ width:250px;
+  height:60px;
+  padding:10px;
+  
+}
+
+
+.home-btn{
+	position: absolute;
+    right: 50px; /* 오른쪽 여백 조정 */
+    bottom: 10px; /* 아래 여백 조정 */
+	width:90px;
+	height:40px;
+	
+}
+
+
+
+
+
+

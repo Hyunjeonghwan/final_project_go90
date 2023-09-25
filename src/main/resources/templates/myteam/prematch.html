@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/assets/css/match.css">
+
+<script defer src="/js/prematch.js"></script>
+<title>예비 경기명단</title>
+</head>
+<body>
+      <div class="second-header">
+            <img draggable="false" class="logo"src="/assets/img/logo.png" alt="" >
+        </div>
+        
+     <header class="header">
+        <div class="header-text">   &#x26BD EZEN FC 경기명단 &#x26BD</div>
+    </header>
+
+   <div class="list-container">
+      <div class="table-container">
+         <table>
+            <thead>
+               <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>경기 날짜</th>
+                  <th>경기 장소</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr th:each="voteList, voteListState : ${voteList}">
+                  <th th:text="${voteListState.count}">1</th>
+                  <td>
+                  <a href="" th:href="@{myteam/management/{voteId}(voteId=${voteList.voteId})}"th:text="${voteList.voteTitle}">9월 10일 경기 참여 설문</a>
+                  </td>
+                  <th th:text="${voteList.matchDate}">2023.09.10</th>
+                  <th th:text="${voteList.location}">경기장</th>
+                  </tr>
+            </tbody>
+         </table>
+                  <a th:href="@{/}"> <input type="button" value="&#x1F3E0홈으로" class="home-btn" ></a>
+      </div>
+   </div>
+
+   
+</body>
+</th:block>
+</html>

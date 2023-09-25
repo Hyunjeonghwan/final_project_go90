@@ -1,0 +1,249 @@
+
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+.main-container{
+  width: 80vw;
+  margin: 0 auto;
+ 
+}
+
+.match-header{
+  background: #d5c5c554;
+  text-align: center;
+  margin: 0 auto;
+  width:100%;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.8);
+  /* padding: 10px; */
+  padding: 1px 0px;
+}
+.match-header:hover{
+  box-shadow: -5px -5px 30px 5px red, 5px 5px 30px 5px blue;
+}
+.first-line,
+.second-line{
+  font-weight: bolder;
+}
+.first-line{
+  font-size: 1.5em;
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
+}
+.second-line{
+  font-size: 2em;
+}
+.user-info, .user-stats {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.user-info{
+  box-shadow: 1px 2px 7px 2px #555555;
+}
+.user-info h2, .user-stats h2 {
+  margin-top: 0;
+}
+
+.user-name, .user-email {
+  font-weight: bold;
+}
+
+/* 차트관련 */
+.chart-container {
+  display: flex;
+}
+
+.chart {
+  flex: 1;
+  min-width: 10%;
+  margin-top:100px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+canvas {
+  width: 100%; 
+  height: 100%;
+  border: 1px solid black;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.stats-table th, .stats-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.stats-table th {
+  background-color: #333;
+  color: white;
+}
+.match-container{
+  width:45%;
+margin: 4%;
+margin-right: 1px;
+box-shadow: 1px 2px 7px 2px #555555;
+float:left;
+}
+
+.main-container::after{
+   content:'';
+   display:block;
+   clear:both;
+}
+
+.sss{clear:both; display:block;}
+
+#modelCanvas,
+#modelCanvas2{
+width:20%;
+height:300px;
+border:none;
+}
+/*===============카드===============*/
+
+
+
+.card-contain {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+.card-container {
+	position: relative;
+	width: 270px;
+	height: 300px;
+	background: #fff;
+	margin: 10px 20px;
+	border-radius: 30px;
+	box-shadow: 1px 5px 10px 10px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+}
+
+.top-box {
+	background: #593ceb;
+	height: 130px;
+	border-radius: 30px;
+	padding: 20px 30px;
+	justify-content: space-between;
+}
+
+
+.top-box-text span {
+	background: linear-gradient(to right, #d000fffb, #4400ff);
+	color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	padding: 3px;
+	border-radius: 5px;
+}
+
+
+.top-box-text {
+	display: flex;
+	height: 30px;
+	justify-content: space-between;
+}
+
+/* Image Box*/
+
+.image-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: -95px auto 10px auto;
+	height: 140px;
+	width: 140px;
+	background: #fff;
+	border-radius: 50%;
+	animation: image-box 5s both linear infinite;
+}
+
+.image-box img {
+	width: 100px;
+	border-radius: 50%;
+	box-shadow: 0px 3px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* User Infomation */
+
+.user-info .name {
+	display: flex;
+	justify-content: center;
+}
+
+.user-info .job {
+	display: flex;
+	justify-content: center;
+	font-size: 13px;
+	color: #ee2482;
+}
+.name{
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+/* Animated circles */
+.circle-2 {
+  position: absolute;
+	right: -11px;
+	bottom: -10px;
+	height: 80px;
+	width: 80px;
+	border-radius: 50%;
+	animation: circle-2 6s ease-in-out infinite;
+}
+/* Circle-2 animation */
+@keyframes circle-2 {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*Image-box animation*/
+@keyframes image-box {
+  0% {
+    transform: translateY(0px)translateX(0px);
+  }
+
+  25% {
+    transform: translateY(-10px)translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-20px)translateX(0px);
+  }
+
+  75% {
+    transform: translateY(-10px)translateX(0px);
+  }
+
+  100% {
+    transform: translateY(0px)translateX(0px);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

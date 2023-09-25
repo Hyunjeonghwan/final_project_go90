@@ -1,0 +1,132 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block
+	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+
+	<th:block th:fragment="title">
+		<title>오시는길</title>
+	</th:block>
+
+	<th:block th:fragment="css">
+	<link rel="stylesheet" href="/css/mapstyle1.css">
+		<style>
+			#sh_content09 {
+				margin: 50px 30px;
+			}
+		</style>
+	</th:block>
+
+	<th:block th:fragment="content">
+
+		<!-- 콘텐츠 시작 { -->
+		<div id="sh_container">
+			<div id="sh_container_wrapper">
+				<!-- 서브 비주얼영역 -->
+				<div id="sub_main_banner">
+					<div id="sh_content_tit">
+						 <h3>오시는 길</h3>
+                        <p><a href="/">HOME</a> 
+         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 오시는길 &nbsp;&nbsp;&nbsp;</p>
+                    </div>
+                </div>
+				<!-- 서브 비주얼영역 끝 -->
+
+				<!-- 서브메뉴 -->
+				<div id="sh_aside">
+					<div id="sh_aside_wrapper">
+						<ul id="sh_snb">
+							<li class='l_menu_OFF'><a href="/club">클럽소개</a></li>
+							<li class='l_menu_OFF'><a
+								href="/member">회원소개</a></li>
+							<li class='l_menu_ON'><a
+								href="/map">오시는길</a></li>
+						</ul>
+						<!-- 소분류 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sh_container_1150">
+			<!-- 콘텐츠영역 -->
+			<div id="sh_content09">
+
+				<div id="sh_map_v">
+
+					<div class="tit_area">
+						<span>ADDRESS</span>
+						<p>서울특별시 노원구 상계로 64 화랑빌딩 7F</p>
+					</div>
+
+					<div id="sh_iframe_wrap">
+						<iframe id="sh_iframe" frameborder='0' border='0' marginwidth='0'
+							marginheight='0' scrolling='no' title="Shining 오시는길"></iframe>
+					</div>
+
+
+
+				</div>
+
+
+				<script>
+					//기본 공통 자료.
+					var sh_map_name = 'Google';
+					var sh_width = $("#sh_iframe").width();
+					var sh_height = (sh_width * 0.5) * 1.1;
+					$('#sh_iframe').css("width", sh_width + 'px');
+					$('#sh_iframe').css("height", sh_height + 'px');
+
+					var sh_subj = 'Go90'; //업체명
+					var sh_x = '37.655891'; //x좌표
+					var sh_y = '127.062481'; //y좌표
+					var sh_zoom = ''; //지도 확대 정도
+
+					if (sh_map_name == 'Naver') {
+						//끌어오는 API원본 경로
+						var exist_map_url = 'http://www.hwr.kr/sh_page/sh_map.php';
+						//전달하는 추가 URL정보
+						var exist_map_add_url = 'sh_x=' + sh_x + '&sh_y='
+								+ sh_y + '&sh_name=' + sh_subj
+								+ '&sh_set=utf8&sh_height=' + sh_height
+								+ '&sh_width=' + sh_width + "&sh_zoom="
+								+ sh_zoom;
+					}
+
+					if (sh_map_name == 'Daum') {
+						//끌어오는 API원본 경로
+						var exist_map_url = 'http://intranet.shiningcorp.com/Daum_map.php';
+						//전달하는 추가 URL정보
+						var exist_map_add_url = "sh_name=" + sh_subj + "&lat="
+								+ sh_x + "&lng=" + sh_y + "&sh_height="
+								+ sh_height + "&sh_width=" + sh_width
+								+ "&sh_zoom=" + sh_zoom;
+					}
+
+					if (sh_map_name == 'Google') {
+						//영문버전 or 한글버전
+						var sh_language = '';
+						//끌어오는 API원본 경로
+						var exist_map_url = 'http://intranet.shiningcorp.com/Google_map.php';
+						//전달하는 추가 URL정보
+						var exist_map_add_url = "sh_name=" + sh_subj + "&lat="
+								+ sh_x + "&lng=" + sh_y + "&sh_zoom=" + sh_zoom
+								+ "&sh_language=" + sh_language;
+					}
+					//iframe에 src값 전달.
+					document.getElementById("sh_iframe").src = exist_map_url
+							+ "?" + exist_map_add_url;
+				</script>
+
+			</div>
+			<!-- sh_content -->
+		</div>
+		<!-- sh_container_1150 -->
+	</th:block>
+
+</th:block>
+
+
+
+</html>
+

@@ -7,18 +7,32 @@
 
 
    <insert id="create" parameterType="Member">
-      INSERT INTO member(member_id, passwd, name, email , member_img, birth)
-      VALUES(#{memberId}, #{passwd}, #{name}, #{email}, #{memberImg}, #{birth})
+     INSERT INTO member(member_id, passwd, name, email , member_img, birth, rank)
+     VALUES(
+        #{memberId}, 
+        #{passwd}, 
+        #{name}, 
+        #{email}, 
+       <if test="memberImg != null">
+                 #{memberImg}
+       </if>
+       <if test="memberImg == null">
+           NULL
+       </if>,
+        #{birth},
+        <if test="rank == 'coach'"> '감독' </if>
+        <if test="rank == null or rank == '' or rank != 'coach'">'회원'</if>
+     )
    </insert>
    
-   <select id="findById" parameterType="string" resultType="Member">
-      SELECT member_id, name, email, passwd, birth,member_img, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
+    <select id="findById" parameterType="string" resultType="Member">
+      SELECT member_id, name, email, passwd, birth,member_img, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate,back_number,position
       FROM member
       WHERE member_id = #{value}
    </select>
    
    <select id="findByAll" resultType="Member">
-      SELECT id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD') regdate
+      SELECT member_id, name, birth, phone_number, email, TO_CHAR(regdate, 'yyyy-MM-DD') regdate, rank, position, back_number, goal, assist, defence, save
       FROM member
       ORDER BY regdate DESC
    </select>
@@ -33,68 +47,24 @@
       WHERE member_id = #{memberId}
    </update>
    
-	<!-- 탈퇴 1단계 : 탈퇴테이블에 데이터 전송 -->
-	<insert id="transfer" parameterType="string">
-	    INSERT INTO secession (secession_id, member_id, secession_name, secession_number, secession_birth)
-		SELECT secession_id_sequence.NEXTVAL, m.member_id, m.name, m.phone_number, m.birth
-		FROM member m
-		WHERE m.member_id = #{memberId}
-	</insert>
-	
-	<!-- 탈퇴 2단계 : 회원 테이블에서 데이터 삭제 -->
-	<delete id="delete" parameterType="string">
-	    DELETE FROM member
-	    WHERE member_id=#{memberId}
-	</delete>
+   <!-- 탈퇴 1단계 : 탈퇴테이블에 데이터 전송 -->
+   <insert id="transfer" parameterType="string">
+       INSERT INTO secession (secession_id, member_id, secession_name, secession_number, secession_birth)
+      SELECT secession_id_seq.NEXTVAL, m.member_id, m.name, m.phone_number, m.birth
+      FROM member m
+      WHERE m.member_id = #{memberId}
+   </insert>
+   
+   <!-- 탈퇴 2단계 : 회원 테이블에서 데이터 삭제 -->
+   <delete id="delete" parameterType="string">
+       DELETE FROM member
+       WHERE member_id=#{memberId}
+   </delete>
    
    <select id="findByIdAndPasswd" resultType="Member">
-      SELECT member_id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
+      SELECT member_id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate, rank
       FROM member
       WHERE member_id = #{id} AND passwd = #{passwd}
-   </select>
-   
-   <select id="findByNameLike" parameterType="string"
-      resultType="Member">
-      SELECT id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
-      FROM member
-      WHERE name LIKE '%' || #{value} || '%'
-   </select>
-   
-   <!-- 동적 SQL 활용 -->
-   <select id="findBySearchType" parameterType="string"
-      resultType="Member">
-      SELECT id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
-      FROM member
-      <where>
-         <if test="type != null and type == 'id'">
-            and id = #{value}
-         </if>
-         <if test="type != null and type == 'name'">
-            and name LIKE '%' || #{value} || '%'
-         </if>
-      </where>
-   </select>
-   
-   <select id="findBySearchAll" parameterType="string"   resultType="Member">
-      SELECT id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
-      FROM member
-      WHERE id = #{value} OR name LIKE '%' || #{value} || '%'
-   </select>
-   
-   <select id="findBySearchAllOption" parameterType="MemberSearchCondition" resultType="Member">
-      SELECT id, name, email, TO_CHAR(regdate, 'yyyy-MM-DD HH24:MI:SS') regdate
-      FROM member
-      <where>
-         <if test="memberId != null and memberId != ''">
-            or id = #{memberId}
-         </if>
-         <if test="name != null and name != ''">
-            or name LIKE '%' || #{name} || '%'
-         </if>
-         <if test="email != null and email != ''">
-            or email = #{email}
-         </if>
-      </where>
    </select>
    
 </mapper>

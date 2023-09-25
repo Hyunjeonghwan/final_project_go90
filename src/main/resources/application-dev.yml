@@ -85,9 +85,13 @@ mybatis:
     map-underscore-to-camel-case: true  
   mapper-locations: 
     - classpath:mybatis/mapper/**/*.xml
-  type-aliases-package: com.ezen.go90.domain.member.dto
+  type-aliases-package: com.ezen.go90.domain.member.dto,
+                        com.ezen.go90.domain.vote.dto,
+                        com.ezen.go90.domain.plan.dto,
+                        com.ezen.go90.domain.article.dto,
+                        com.ezen.go90.domain.board.dto,
+                        com.ezen.go90.domain.match.dto
 
----
       
 # 파일업로드 경로 설정
 common:

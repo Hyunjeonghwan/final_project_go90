@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+  <th:block th:fragment="title" th:each="boards : ${boards}">
+    <title th:text="${boards.boardName}">공지사항</title>
+  </th:block>
+
+  <!-- 반응형 구조 만들기 -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+  <th:block th:fragment="css">
+    <link rel="stylesheet" href="/css/gallerystyle1.css">
+      <link rel="stylesheet" href="/css/faqstyle1.css">
+        <style>
+          #sh_content00 {
+          margin: 50px 30px;
+          }
+        </style>
+  </th:block>
+  <th:block th:fragment="content">
+
+    <!-- 상단 메뉴 시작 -->
+    <div id="sh_container">
+      <div id="sh_container_wrapper">
+        <!-- 서브 비주얼영역 -->
+        <div id="sub_main_banner">
+          <div id="sh_content_tit">
+            <th:block th:each="boards : ${boards}">
+              <h3 th:text="${boards.boardName}">문의사항</h3>
+                <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;
+                <img src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                <a th:text="${boards.boardName}">문의사항</a>
+            </th:block>
+           </div>
+         </div>
+         <!-- 서브 비주얼영역 끝 -->
+
+           <!-- 서브메뉴 -->
+           <div id="sh_aside">
+             <div id="sh_aside_wrapper">
+                  <ul id="sh_snb">
+                     <li class='l_menu_ON'>
+                     	<a href="#" th:href="@{/board/{boardId}(boardId=1)}">공지사항</a>
+                     </li>
+                     <li class='l_menu_OFF'>
+                     	<a href="" th:href="@{/board/{boardId}(boardId=2)}">문의사항</a>
+                     </li>
+                  </ul>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <!-- 상단 메뉴 끝 -->
+
+       <div id="sh_container_1150">
+         <!-- 콘텐츠영역 -->
+         <div id="sh_content00">
+           <div id="sh_faq">
+               
+             <div class="list_top">
+               <fieldset id="sh_bo_sch">
+                 <legend>게시물 검색</legend>
+                   <form name="fsearch" method="get" th:action="@{/board/{boardId}(boardId=${boardId}, type=${type}, input=${input})}">
+                     <label for="sfl" class="sound_only">검색대상</label> 
+                       <select name="type" id="sfl">
+                         <option value="articleTitle">제목</option>
+                         <option value="articleContent">내용</option>
+                         <option value="articleTitle_articleContent">제목+내용</option>
+                         <option value="articleWriter">글쓴이</option>
+                       </select> 
+                       <input type="text" name="input" value="" required id="stx" class="sch_input" size="25" maxlength="20"> 
+                       <input type="image" src="/img/sh_search.png" alt="검색" name="submit" value="submit" />
+                     </form>
+                   </fieldset>
+                 </div>
+              
+                 <div class="cont_faq" th:each="article, state : ${articles}">
+                   <button class="cont_q " type="button" >
+                     <span class="num"> Q </span>
+                       <p th:text="${article.articleId}" style="display: none;"></p>
+                       <p th:text="${article.articleTitle}" th:href="@{/board/details/{articleId}(articleId=${article.articleId})}"></p>
+                   </button>
+                   
+                   <div class="cont_a">
+                     <p>
+                       <span style="color: rgb(102, 102, 102); font-family: &amp; amp;" th:text="${article.articleContent}">비밀글 입니다.</span>&nbsp;
+                     </p>
+                   </div>
+                 
+                 </div>
+               </div>
+
+               <div class="btn_area" style="text-align: right;">
+                 <th:block th:each="boards : ${boards}">
+                   <a href="#" th:href="@{/board/noticewrite(boardId=${boards.boardId})}">
+                     <button th:if="${session.loginMember != null && session.loginMember.rank == '감독'}"
+                             style="display: inline-block; width: 120px; height: 40px; margin: 0 auto; border-radius: 2px; 
+                                    font-size: 15px; color: #fff; text-align: center; line-height: 25px; background-color: #0054a6; 
+                                    font-family: 'notokr-medium'">게시글 작성
+                     </button>
+                   </a>
+                 </th:block>
+
+               </div>
+             </div>
+           </div>
+      
+      <script>
+        $('.cont_q').click(function(){
+        $(this).toggleClass('open');
+        $(this).siblings('.cont_a').slideToggle(200);
+        });
+      </script>
+
+    </th:block>
+
+  </th:block>
+
+</html>

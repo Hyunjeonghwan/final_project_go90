@@ -28,9 +28,9 @@
                 <!-- 서브 비주얼영역 -->
                 <div id="sub_main_banner">
                     <div id="sh_content_tit">
-                        <h3>SCHEDULE</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
+                        <h3>클럽소개</h3>
+                        <p><a href="/">HOME</a> 
+         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽소개 &nbsp;&nbsp;&nbsp;</p>
                     </div>
                 </div>
                 <!-- 서브 비주얼영역 끝 -->
@@ -40,13 +40,13 @@
                     <div id="sh_aside_wrapper">
                         <ul id="sh_snb">
                             <li class='l_menu_ON'>
-                                <a href="page6.html">SHINING레져 소개</a>
+                                <a href="/club">클럽소개</a>
                             </li>
                             <li class='l_menu_OFF'>
-                                <a href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a>
+                                <a href="/member">회원 소개</a>
                             </li>
                             <li class='l_menu_OFF'>
-                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
+                                <a href="/map">오시는길</a>
                             </li>
                         </ul>
                         <!-- 소분류 끝 -->
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="txt_a ea">
                                     <div class="col">
-                                        <img src="/img/teamintro.jpg" />
+                                        <img src="/img/teamintro.jpg" style="width:1150px;"/>
                                         <dl>
                                             <dt><i class="far fa-calendar-alt"></i> 2022</dt>
                                             <dd>
@@ -111,84 +111,25 @@
                                     <p class="b_tit">TEAM REPORTS</p>
                                     <p class="tit">팀 <b>경기기록</b></p>
                                 </div>
-                                <div class="dropdown">
-                                    <!-- <label for="year-select">년도 선택</label> -->
-                                    <select id="year-select">
-                                        <option value="2023">년도선택</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
+                            
                                 <div class="container">
                                     <table class="table table-hover">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th>번호</th>
                                                 <th>경기날짜</th>
-                                                <th>승</th>
-                                                <th>무</th>
-                                                <th>패</th>
                                                 <th>상대팀 명</th>
+                                                <th>경기결과</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2023-09-03</td>
-                                                <td>1</td>
-                                                <td>0</td>
-                                                <td>0</td>
-                                                <td>상대팀 A</td>
+                                            <tr th:each="match, matchState : ${match}">
+                                                <td th:text="${matchState.count}">1</td>
+                                                <td th:text="${match.matchDate}">2023-09-03</td>
+                                                <td th:text="${match.opponent}">상대팀 A</td>
+                                                <td th:text="${match.result}">승</td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>2023-09-02</td>
-                                                <td>0</td>
-                                                <td>1</td>
-                                                <td>0</td>
-                                                <td>상대팀 B</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>2023-08-27</td>
-                                                <td>0</td>
-                                                <td>0</td>
-                                                <td>1</td>
-                                                <td>상대팀 C</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>2023-08-26</td>
-                                                <td>1</td>
-                                                <td>1</td>
-                                                <td>0</td>
-                                                <td>상대팀 D</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>2023-08-20</td>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>0</td>
-                                                <td>상대팀 E</td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>2023-08-19</td>
-                                                <td>0</td>
-                                                <td>0</td>
-                                                <td>1</td>
-                                                <td>상대팀 F</td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>2023-08-13</td>
-                                                <td>1</td>
-                                                <td>0</td>
-                                                <td>0</td>
-                                                <td>상대팀 G</td>
-                                            </tr>
+                                         
                                         </tbody>
                                     </table>
                                 </div>
