@@ -18,6 +18,5 @@ ECLIPSE
 VSCODE
 ORACLE
 
-### <strong>Ⅳ더 자세히 보기</strong>
 
 
