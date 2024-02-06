@@ -13,11 +13,10 @@ JAVA
 SPRINGBOOT
 
 
-### <strong>Ⅲ개발환경</strong>
+### <strong>Ⅳ개발환경</strong>
 ECLIPSE
 VSCODE
-ORACLE
+ORACLE sql
 
-### <strong>Ⅳ더 자세히 보기</strong>
 
 
