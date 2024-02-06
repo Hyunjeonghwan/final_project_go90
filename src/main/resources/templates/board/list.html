@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block
+   th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+
+   <th:block th:fragment="title" th:each="boards : ${boards}">
+      <title th:text="${boards.boardName}">공지사항</title>
+   </th:block>
+
+   <!-- 반응형 구조 만들기 -->
+   <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+   <th:block th:fragment="css">
+      <link rel="stylesheet" href="/css/boardstyle.css">
+      <style>
+      
+      #sh_content1213 {
+         margin: 50px 30px;
+      }
+
+      #selected-page{
+         
+         color:#3255c7 !important;
+      }
+      
+      .pagination li {
+          display: inline-block;
+          margin-right: 5px;
+        }
+        
+      .pagination-container {
+          text-align: center;
+          margin-top: 20px;
+      }
+      
+      .pagination {
+          display: inline-block;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+      }
+      
+      .pagination a {
+          text-decoration: none;
+          padding: 6px 12px;
+          border: 1px solid #ddd;
+          color: #333;
+      }
+      
+      .pagination a:hover {
+          background-color: #f5f5f5;
+      }
+      
+      .pagination .active a {
+          background-color: #007bff;
+          color: #fff;
+          border: 1px solid #007bff;
+      }
+      
+      .pagination .disabled a {
+          cursor: not-allowed;
+          pointer-events: none;
+          background-color: #eee;
+          color: #888;
+          border: 1px solid #ddd;
+      }
+      
+      .pagination a.page-link {
+	    margin-right: -4.5px; 
+	    margin-left: -4.5px; 
+	  }
+
+     </style>
+   </th:block>
+
+
+   <th:block th:fragment="content">
+
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+         <div id="sh_container_wrapper">
+            <!-- 서브 비주얼영역 -->
+            <div id="sub_main_banner">
+               <div id="sh_content_tit">
+                  <th:block th:each="boards : ${boards}">
+                     <h3 th:text="${boards.boardName}">공지사항</h3>
+                     <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;<img
+                        src="/img/ar.png" alt="화살표" style= "margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                     <a th:text="${boards.boardName}">공지사항</a>
+                  </th:block>
+                  <a></a>
+               </div>
+            </div>
+            <!-- 서브 비주얼영역 끝 -->
+
+
+            <!-- 서브메뉴 -->
+            <div id="sh_aside">
+               <div id="sh_aside_wrapper">
+                  <ul id="sh_snb">
+                     <li class='l_menu_OFF'>
+                     	<a href="#" th:href="@{/board/{boardId}(boardId=1)}" th:if="${boardId == 1 or boardId == 2}">공지사항</a>
+                     	<a href="" th:href="@{/board/{boardId}(boardId=4)}" th:if="${boardId == 3 or boardId == 4}">자유게시판</a>
+                     </li>
+                     <li class='l_menu_OFF'>
+                     	<a href="" th:href="@{/board/{boardId}(boardId=2)}" th:if="${boardId == 1 or boardId == 2}">문의사항</a>
+                     	<a href="#" th:href="@{/board/{boardId}(boardId=3)}" th:if="${boardId == 3 or boardId == 4}">갤러리</a>
+                     </li>
+                 </ul>
+               </div>
+            </div>
+            <!-- 서브메뉴 끝 -->
+
+         </div>
+      </div>
+      <!-- 상단 메뉴 끝 -->
+
+      <div id="sh_container_1150">
+         <!-- 콘텐츠영역 -->
+         <div id="sh_content1213">
+
+            <div id="sh_bo_list">
+
+              <div class="list_top">
+	           <fieldset id="sh_bo_sch">
+	             <legend>게시물 검색</legend>
+	              <form name="fsearch" method="get"
+	                    th:action="@{/board/{boardId}(boardId=${boardId}, type=${type}, input=${input})}">
+	                <label for="sfl" class="sound_only">검색대상</label>
+	                  <select name="type" id="sfl">
+	                  <option value="articleTitle">제목</option>
+	                  <option value="articleContent">내용</option>
+	                  <option value="articleTitle_articleContent">제목+내용</option>
+	                  <option value="articleWriter">글쓴이</option>
+	                 </select>
+	               
+	               <input type="text" name="input" value="" required id="stx"
+	                     class="sch_input" size="25" maxlength="20"> 
+	                <input type="image" src="/img/sh_search.png" alt="검색" name="submit" value="submit" />
+	              </form>
+	           </fieldset>
+	         </div>
+
+               <div id="sh_list_tbl" class="sh_tbl_common">
+                  <table cellpadding="0" cellspacing="0">
+                     <caption class="sound_only">문의게시판 목록</caption>
+                     <thead>
+                        <tr >
+                           <th scope="col">No</th>
+                           <th scope="col">제목</th>
+                           <th scope="col">작성자</th>
+                           <th scope="col">조회수</th>
+                           <th scope="col">등록일</th>
+                        </tr>
+                     </thead>
+
+                     <tbody>
+                        <tr th:each="article, state : ${articles}" >
+		                  <td class="num" scope="row" th:text="${article.articleId}" >3</td>
+		
+		                 <td class="subject" style="padding-left: 0px">
+		                   <div th:if="${article.boardId == 2}">
+		                    <a th:if="${session.loginMember.rank == '감독' || session.loginMember.memberId == article.articleWriter}" 
+		                      th:text="${article.articleTitle}" 
+		                      th:href="@{/board/details/{articleId}/{hitcount}(articleId=${article.articleId},hitcount=${article.hitcount})}">
+		                    </a>
+		                    <a th:if="${session.loginMember.rank == '회원'&& session.loginMember.memberId != article.articleWriter}" 
+		                       th:text="비밀글입니다.">
+		                    </a>
+		                   </div>
+		                  
+		                  <div th:if="${article.boardId != 2}">
+		                    <a th:text="${article.articleTitle}" 
+		                       th:href="@{/board/details/{articleId}/{hitcount}(articleId=${article.articleId},hitcount=${article.hitcount})}">
+		                    </a>
+		                  </div>
+		                 </td>
+		                 
+		                 <td class="name sv_use" th:text="${article.articleWriter}">
+		                   <span class="sv_guest">홍길동</span></td>
+		                    <td class="datetime" th:text="${article.hitcount}">5</td>
+		                    <td class="datetime" th:text="${article.articleRegdate}">2018-09-11</td>
+		               </tr>
+                     </tbody>
+                  </table>
+                  
+               </div>
+               
+             <!-- 페이징 처리 -->
+            
+               <div class="pagination-container" style="text-align: center;">
+              
+               <ul   class="pagination h-100 justify-content-center align-items-center">
+                  <li class="page-item" th:if="${pagination.showFirst} ?: '' ">
+                     <a class="page-link" th:text="${pagination.showFirst} ? '처음' : '' "
+                        th:href="@{/board/{boardId}(boardId=${pageParams.boardId} , page=1)}">처음으로</a>
+                  </li>
+                  <li class="page-item" th:if="${pagination.showPrevious} ?: '' ">
+                     <a class="page-link" th:text="${pagination.showFirst} ? '이전' : '' "
+                        th:href="@{/board/{boardId}(boardId=${pageParams.boardId}, page=${pagination.previousStartPage})}">이전목록</a>
+                  </li>
+                  <li class="page-item" aria-current="page" th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+                     <a class="page-link" id="selected-page" href="#" th:text="${i}"
+                        th:href="@{/board/{boardId}(boardId=${pageParams.boardId} , page=${i},type=${type},input=${input})}">1</a>
+                  </li>
+                  <li class="page-item" th:if="${pagination.showNext} ?: '' ">
+                      <a class="page-link" th:text="${pagination.showLast} ? '다음' : '' "
+                        th:href="@{/board/{boardId}(boardId=${pageParams.boardId}, page=${pagination.nextStartPage})}">다음목록</a></li>
+                  <li class="page-item" th:if="${pagination.showLast} ?: '' ">
+                     <a class="page-link" th:text="${pagination.showLast} ? '끝으로' : '' "
+                        th:href="@{/board/{boardId}(boardId=${pageParams.boardId}, page=${pagination.totalPages})}">끝으로</a>
+                  </li>
+               </ul>
+               
+          </div>
+          
+         
+               <div class="btn_area" style="text-align: right;">
+                  <th:block th:each="boards : ${boards}">
+                     <a th:href="@{/board/write(boardId=${boards.boardId})}">
+                        <button th:if="${session.loginMember} != null"
+                           style="display: inline-block; width: 120px; height: 40px; margin: 0 auto; border-radius: 2px; font-size: 15px; color: #fff; text-align: center; line-height: 25px; background-color: #0054a6; font-family: 'notokr-medium'">
+                           게시글 작성</button>
+                     </a>
+                  </th:block>
+               </div>
+            </div>
+         </div>
+         <!-- sh_content -->
+         
+         
+      </div>
+      <!-- sh_container_1150 -->
+      
+
+
+   </th:block>
+
+</th:block>
+
+</html>

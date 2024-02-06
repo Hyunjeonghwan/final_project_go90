@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<!-- 네임스페이스 -->
+<mapper namespace="com.ezen.go90.domain.article.mapper.ArticleMapper">
+   
+   <!-- ========== 게시글 등록 ================ -->
+   <insert id="articleCreate" parameterType="ArticleDTO" >
+      INSERT INTO article
+                    (article_id,
+                     board_id,
+                     article_writer,
+                     article_title,
+                     article_content,
+                     hitcount,
+                     image_path)
+      VALUES      (article_id_seq.NEXTVAL,
+                   #{boardId},
+                   #{articleWriter},
+                   #{articleTitle},
+                   <if test="articleContent != null">
+                    #{articleContent}
+                </if>
+                <if test="articleContent == null">
+                    NULL
+                </if>,
+                         #{hitcount},
+                   <if test="imagePath != null">
+                    #{imagePath}
+                </if>
+                <if test="imagePath == null">
+                    NULL
+                </if>)
+   </insert>
+   
+   
+   <select id ="findArticles" parameterType="int" resultType="ArticleDTO">
+            SELECT article_id, 
+                   board_id, 
+                  article_writer, 
+                   article_regdate, 
+                   article_title, 
+                   article_content, 
+                   hitcount, 
+                    image_path
+          FROM    article
+           WHERE   board_id = #{boardId}
+            ORDER BY article_regdate DESC
+   </select>
+   
+   <!-- 게시글 수정-->
+   <update id="updateArticle" parameterType="ArticleDTO">
+      UPDATE article
+      <set>
+           <if test="articleTitle != null">article_title = #{articleTitle},</if>
+           <if test="articleContent != null">article_content = #{articleContent}</if>
+       </set>
+       WHERE article_id = #{articleId}
+   </update> 
+   
+   
+   <!-- 게시글 삭제 전 articleId 조정 -->
+   <update id="beforeRemoveUpdateArticleId" parameterType="map">
+       UPDATE article 
+       SET article_id = article_id - 1 
+       WHERE board_id = #{boardId} 
+       AND article_id > #{articleId}
+   </update>
+   
+   
+   <!-- 게시글 삭제 -->
+   <delete id="removeArticle" parameterType="int">
+     DELETE FROM article
+     WHERE article_id = #{articleId}
+   </delete>
+   
+   <!-- 댓글 같이삭제 -->
+   <delete id = "removeReply" parameterType="int">
+      DELETE FROM reply
+      WHERE article_id = #{articleId}
+   </delete>
+   
+   <!-- 게시글 상세보기 (게시판id 파라미터 받는다는 가정) -->
+   <select id="openArticle" parameterType="int" resultType="ArticleDTO">
+           SELECT article_id,
+                  article_writer,
+                  article_title,
+                  article_content,
+                  article_regdate,
+                  board_id,
+                  hitcount
+           FROM   article
+           WHERE  article_id = #{articleId}
+   </select>
+   
+   <!-- 댓글 생성 -->
+   <insert id="reply" parameterType="ReplyDTO">
+      INSERT INTO reply
+                  (reply_id,
+                   article_id,
+                   reply_writer,
+                   reply_content,
+                   reply_regdate,
+                   order_no,
+                   level_no)
+      VALUES      (reply_id_seq.NEXTVAL,
+                   #{articleId},
+                   #{replyWriter},
+                   #{replyContent},
+                   SYSDATE,
+                   
+                   (SELECT COALESCE(MAX(order_no), 0) + 1
+                    FROM   reply
+                    WHERE  article_id = #{articleId}), 
+                    
+                    #{levelNo} + 1)
+   </insert>
+   
+   <!-- 댓글 리스트 보여주기 -->
+   <select id="replyShow" parameterType="int" resultType="ReplyDTO">
+      SELECT reply_id,
+             reply_writer,
+             reply_regdate,
+             reply_content,
+             order_no,
+             level_no,
+             article_id
+      FROM   reply
+      WHERE  article_id = #{articleId}
+      ORDER BY reply_id DESC
+   </select>
+   
+   <!-- 대댓글 전 orderNo 조정 -->
+   <update id="updateOrderNo" parameterType="map">
+      UPDATE article 
+      SET    order_no = order_no + 1 
+      WHERE  board_id = #{boardId} 
+      AND    order_no &gt; (SELECT order_no 
+      FROM   article 
+      WHERE  article_id = #{articleId})
+   </update>
+   
+   <!-- 대댓글 생성 -->
+   <insert id="replyComent">
+      INSERT INTO article
+                  (article_id,
+                   article_writer,
+                   article_title,
+                   article_content,
+                   level_no, 
+                   order_no)
+      VALUES      (
+                   article_id_seq.NEXTVAL,
+                   #{articleWriter},
+                   #{articleTitle},
+                   #{articleContent},
+                   #{levelNo} +1,
+                   (SELECT order_no + 1
+      FROM         article
+      WHERE        article_id = #{articleId}))
+   </insert>
+
+   <!-- 게시판번호로 게시물 -->
+   <select id="findByBoardId" resultType="ArticleDTO">
+      SELECT       *
+      FROM         article
+      WHERE        board_id = #{boardId}
+   </select>
+   
+   <!-- 요청 페이지, 페이지당 보여지는 목록 갯수에 따른 목록 반환 -->
+     <select id="findByAll" resultType="ArticleDTO"
+      parameterType="com.ezen.go90.domain.common.web.PageParams">
+     
+      SELECT       article_id,
+                   board_id,
+                  article_writer,
+                   article_regdate,
+                  article_title,
+                   article_content,
+                   hitcount,
+                   image_path
+          
+      FROM         (SELECT (CEIL(rownum / 10))
+                    request_page,
+                  article_title,
+                  board_id,
+                    article_writer,
+                  article_content,
+                  TO_CHAR(article_regdate, 'YYYY-MM-DD HH24:MI') AS article_regdate,
+                  hitcount,
+                   image_path,
+                  article_id
+               
+      FROM (SELECT article_title,
+                    board_id,
+                  article_writer,
+                  article_content,
+                   article_regdate,
+                   hitcount,
+                   image_path,
+                   article_id
+               
+         FROM        article
+         <where>
+            <if test="type == 'articleTitle'">
+               AND article_title LIKE '%' || #{input} || '%'
+            </if>
+            <if test="type == 'articleContent'">
+               AND article_content LIKE '%' || #{input} || '%'
+            </if>
+            <if test="type == 'articleWriter'">
+               AND article_writer = #{input}
+            </if>
+            <if test="type == 'articleTitle_articleContent'">
+               AND (article_title LIKE '%' || #{input} || '%' OR
+               article_content LIKE '%' || #{input} || '%')
+            </if>
+         AND board_id = #{boardId}
+      
+           </where>
+            ORDER BY article_regdate DESC))
+      
+      WHERE request_page = #{requestPage}
+   
+</select>
+
+   <!-- 페이징 계산에 필요한 게시글 전체 개수 반환 -->
+   <select id="getCountAll" resultType="int" parameterType="com.ezen.go90.domain.common.web.PageParams">
+      SELECT COUNT(article_id)
+      FROM   article
+       <where>
+           <if test="type == 'articleWriter'">
+               AND article_writer = #{input}
+           </if>
+           <if test="type == 'articleTitle'">
+               AND article_title LIKE '%' || #{input} || '%'
+           </if>
+           <if test="type == 'articleContent'">
+               AND article_content LIKE '%' || #{input} || '%'
+           </if>
+               AND board_id = #{boardId}
+       </where>
+   </select>
+
+   <!-- 조회수 조절 -->
+   <update id="setHitcount">
+      UPDATE article
+      SET hitcount = hitcount + 1
+      WHERE article_id = #{articleId}
+   </update>
+   
+   <!-- image 테이블에 데이터 추가 (article_id와 연결) -->
+   <insert id="imageCreate" parameterType="Image" >
+      INSERT INTO image (
+          img_id,
+          img_path,
+          article_id
+      ) VALUES (
+          img_id_seq.NEXTVAL,
+          #{imgPath},
+          (SELECT MAX(article_id) FROM article)
+      )
+   </insert>
+   
+   <!-- image 테이블 이미지 출력 -->
+   <select id = "imageList"  resultType="Image">
+      select  IMG_ID,IMG_CONTENT,IMG_PATH,ARTICLE_ID
+      from image
+      where article_id = #{articleId}
+   </select>
+   
+   <!-- image 테이블 이미지 출력 -->
+   <select id = "totalImageList"  resultType="Image">
+      select  IMG_ID,IMG_CONTENT,IMG_PATH,ARTICLE_ID
+      from image
+   </select>
+   
+   
+</mapper>

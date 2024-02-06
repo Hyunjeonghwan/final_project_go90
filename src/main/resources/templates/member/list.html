@@ -31,9 +31,9 @@
                 <!-- 서브 비주얼영역 -->
                 <div id="sub_main_banner">
                     <div id="sh_content_tit">
-                        <h3>회원 목록</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
+                        <h3>회원 소개</h3>
+                        <p><a href="/">HOME</a> 
+         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 회원소개 &nbsp;&nbsp;&nbsp;</p>
                     </div>
                 </div>
                 <!-- 서브 비주얼영역 끝 -->
@@ -42,14 +42,14 @@
                 <div id="sh_aside">
                     <div id="sh_aside_wrapper">
                         <ul id="sh_snb">
+                            <li class='l_menu_OFF'>
+                                <a href="/club">팀 소개</a>
+                            </li>
                             <li class='l_menu_ON'>
-                                <a href="page6.html">팀 소개</a>
+                                <a href="/member">회원 목록</a>
                             </li>
                             <li class='l_menu_OFF'>
-                                <a href="../bbs/board34fb.html?bo_table=table7">회원 목록</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
+                                <a href="/map">오시는길</a>
                             </li>
                         </ul>
                         <!-- 소분류 끝 -->
@@ -89,17 +89,6 @@
                 </fieldset>
               </div>
 
-              <form name="fboardlist" id="fboardlist" action="" onsubmit="return fboardlist_submit(this);"
-                method="post">
-                <input type="hidden" name="bo_table" value="table15">
-                <input type="hidden" name="sfl" value="">
-                <input type="hidden" name="stx" value="">
-                <input type="hidden" name="spt" value="">
-                <input type="hidden" name="sca" value="">
-                <input type="hidden" name="sst" value="wr_num, wr_reply">
-                <input type="hidden" name="sod" value="">
-                <input type="hidden" name="page" value="1">
-                <input type="hidden" name="sw" value="">
 
                 <div id="sh_list_tbl" class="sh_tbl_common">
                   <table cellpadding="0" cellspacing="0">
@@ -107,26 +96,30 @@
                     
                     <thead>
                       <tr>
-                        <th scope="col">사진</th>
-                        <th scope="col">등번호</th>
-                        <th scope="col">아이디</th>
+                        <th scope="col">ID</th>
                         <th scope="col">이름</th>
+                        <th scope="col">email</th>
+                        <th scope="col">생일</th>
+                        <th scope="col">등번호</th>
                         <th scope="col">포지션</th>
-                        <th scope="col">골</th>
-                        <th scope="col">어시스트</th>
-                        <th scope="col">선방</th>
+                       
+                        <th scope="col">회원등급</th>
+                        <th scope="col">가입날짜</th>
                       </tr>
                     </thead>
                     
-                    <tbody>
+                    <tbody style="text-align : center">
                     
-			            <tr th:each="member, state : ${list}">
-			              <td th:text="${member.memberImg}">profile</td>
-			              <th scope="row" th:text="${member.backnumber}">1</th>
-			              <td th:text="${member.memberId}">bangry</td>
+			            <tr th:each="member : ${member}">
+			              <td th:text="${member.memberId}">ID</td>
 			              <td th:text="${member.name}">이름</td>
-			              <td th:text="${member.email}">bangry@gmail.com</td>
-			              <td th:text="${member.regdate}">2023-05-05</td>
+			              <td th:text="${member.email}">이메일</td>
+			              <td th:text="${member.birth}">생일</td>
+			              <th th:text="${member.backnumber}">등번호</th>
+			              <th th:text="${member.position}">포지션</th>
+			             
+			              <th th:text="${member.rank}">회원등급</th>
+			              <td th:text="${member.regdate}">가입일</td>
 			            </tr>
                       
                     </tbody>
@@ -138,7 +131,6 @@
                   </ul>
                 </div>
 
-              </form>
 
             </div>
 

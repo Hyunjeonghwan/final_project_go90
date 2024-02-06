@@ -1,160 +1,239 @@
 <!DOCTYPE HTML>
-<html  xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <th:block
-	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+   th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
 
-	<th:block th:fragment="title">
-			<title>갤러리</title>
-	</th:block>
+   <th:block th:fragment="title" th:each="boards : ${boards}">
+      <title th:text="${boards.boardName}">문의사항</title>
+   </th:block>
 
-    <!-- 반응형 구조 만들기 -->
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+   <!-- 반응형 구조 만들기 -->
+   <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 
 
-	<th:block th:fragment="css">
-    <link rel="stylesheet" href="/css/gallerystyle1.css">
-    <link rel="stylesheet" href="/css/faqstyle1.css">
-    <style>
-    	#sh_content00{
-    		margin: 50px 30px;
-    	}
-    </style>
-    </th:block>
+   <th:block th:fragment="css">
+      <link rel="stylesheet" href="/css/gallerystyle1.css">
+      <link rel="stylesheet" href="/css/faqstyle1.css">
+      <style>
+         #sh_content00 {
+            margin: 50px 30px;
+         }
+      </style>
+   </th:block>
 
-   
-<th:block th:fragment="content">
 
-<!-- 상단 메뉴 시작 -->
-<div id="sh_container">
-            <div id="sh_container_wrapper">
-                <!-- 서브 비주얼영역 -->
-                <div id="sub_main_banner">
-                    <div id="sh_content_tit">
-                        <h3>갤러리</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
-                    </div>
-                </div>
-                <!-- 서브 비주얼영역 끝 -->
+   <th:block th:fragment="content">
 
-                <!-- 서브메뉴 -->
-                <div id="sh_aside">
-                    <div id="sh_aside_wrapper">
-                        <ul id="sh_snb">
-                            <li class='l_menu_ON'>
-                                <a href="page6.html">SHINING레져 소개</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
-                            </li>
-                        </ul>
-                        <!-- 소분류 끝 -->
-                    </div>
-                </div>
-                </div>
-                </div>
-                
-<!-- 상단 메뉴 끝 -->
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+         <div id="sh_container_wrapper">
+            <!-- 서브 비주얼영역 -->
+            <div id="sub_main_banner">
+               <div id="sh_content_tit">
+                  <th:block th:each="boards : ${boards}">
+                     <h3 th:text="${boards.boardName}">문의사항</h3>
+                     <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;<img
+                        src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                     <a th:text="${boards.boardName}">문의사항</a>
+                  </th:block>
+                  <a></a>
+               </div>
+            </div>
+            <!-- 서브 비주얼영역 끝 -->
+
+            <!-- 서브메뉴 -->
+            <div id="sh_aside">
+               <div id="sh_aside_wrapper">
+                  <!-- 
+                  <ul id="sh_snb">
+                     <li class='l_menu_ON'><a href="page6.html">SHINING레져 소개</a>
+                     </li>
+                     <li class='l_menu_OFF'><a
+                        href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a></li>
+                     <li class='l_menu_OFF'><a
+                        href="../bbs/board9208.html?bo_table=table8">오시는길</a></li>
+                  </ul>
+               -->
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- 상단 메뉴 끝 -->
 
 
       <div id="sh_container_1150">
-      <!-- 콘텐츠영역 -->
-      <div id="sh_content00">
-   
-<div id="sh_faq"> 
-    
-        
-    <div class="list_top">
-              <fieldset id="sh_bo_sch">
-            <legend>게시물 검색</legend>
-            <form name="fsearch" method="get">
-            <input type="hidden" name="bo_table" value="table27">
-            <input type="hidden" name="sca" value="">
-            <input type="hidden" name="sop" value="and">
-            <label for="sfl" class="sound_only">검색대상</label>
-            <select name="sfl" id="sfl">
-                <option value="wr_subject">제목</option>
-                <option value="wr_content">내용</option>
-                <option value="wr_subject||wr_content">제목+내용</option>
-                <option value="mb_id,1">아이디</option>
-                <option value="wr_name,1">글쓴이</option>
-            </select>
-            <label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-            <input type="text" name="stx" value="" required id="stx" class="sch_input" size="25" maxlength="20">
-            <input type="image" src="../img/sh_search.png" alt="검색" name="submit" value="submit" />
-            </form>
-        </fieldset>        
-    </div>
-        
-    <form name="fboardlist" id="fboardlist" action="http://lei1009.shiningcorp.com/bbs/board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
-        <input type="hidden" name="bo_table" value="table27">
-        <input type="hidden" name="sfl" value="">
-        <input type="hidden" name="stx" value="">
-        <input type="hidden" name="spt" value="">
-        <input type="hidden" name="page" value="1">
-        <input type="hidden" name="sw" value="">
-            
-        <div class="faq_wrap">
-                        <div class="cont_faq">
-                                <button class="cont_q open" type="button">
-                    <span class="num">Q
-                    </span>
-                    <p>제작 기간은 얼마나 걸리나요?</p>
-                </button>    
-            
-                <div class="cont_a">
-                                            
-                    <p><span style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">홈페이지의 기본 틀을 구축해드리는 시간은 2~3일이면 충분합니다.</span><br style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;"><span style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">고객님께서 준비해주시는 자료의 시간에 따라서 제작완료 기간이 정해집니다.</span><br style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;"><span style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">인사말, 연혁, 기타 소개 부분이 모두 준비되셨다면 7일 안에 정상사용가능하도록 제작이 됩니다.</span><br style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;"><span style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">빠른 제작을 위해.&nbsp;인사말, 연혁, 소개 부분, 도메인이름 을 미리 정해주시면 빠르게 제작이 가능합니다.</span>&nbsp;</p>                </div>
-            </div>
-                        <div class="cont_faq">
-                                <button class="cont_q " type="button">
-                    <span class="num">Q
-                    </span>
-                    <p>무료 홈페이지 정말 무료인가요?</p>
-                </button>    
-            
-                <div class="cont_a">
-                                            
-                    <div style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">저희 무료디자인을 사용하시는 것은 무료 입니다.<br style="box-sizing: border-box;"><br style="box-sizing: border-box;">무료디자인을 고객님 업체에 맞게 셋팅하는 비용과 웹 호스팅 1년 유지비용이 들어갑니다.<br style="box-sizing: border-box;"><br style="box-sizing: border-box;">&nbsp;</div><p style="box-sizing: border-box; word-break: break-all; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);"><a href="http://co1001.shiningcorp.com/bbs/board.php?bo_table=table19&amp;wr_id=2" style="box-sizing: border-box; color: rgb(0, 0, 0); text-decoration-line: none; cursor: pointer; font-size: 14.4px;"><br style="box-sizing: border-box;">&nbsp;</a></p><div style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);"><strong style="box-sizing: border-box;">*도메인 :</strong><br style="box-sizing: border-box;"><br style="box-sizing: border-box;">홈페이지의&nbsp;<a href="http://www.xn--jx2bx8w.com/" style="box-sizing: border-box; color: rgb(0, 0, 0);">www.이름.com</a>&nbsp;과 같은 주소 이름입니다.</div><p style="box-sizing: border-box; word-break: break-all; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);"><a href="http://co1001.shiningcorp.com/bbs/board.php?bo_table=table19&amp;wr_id=2" style="box-sizing: border-box; color: rgb(0, 0, 0); text-decoration-line: none; cursor: pointer; font-size: 14.4px;"><br style="box-sizing: border-box;">&nbsp;</a></p><div style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);"><strong style="box-sizing: border-box;">*웹호스팅 :</strong><br style="box-sizing: border-box;"><br style="box-sizing: border-box;">제작이 끝난 홈페이지의 모든 이미지 내용들은 서버라는 컴퓨터에 저장이 되어야만&nbsp;전국 전세계 어디서든 볼수 있습니다.&nbsp;<br style="box-sizing: border-box;"><br style="box-sizing: border-box;">이 서버라는 컴퓨터의 저장공간 임대 비용을 웹호스팅 이라합니다.</div>                </div>
-            </div>
-                        <div class="cont_faq">
-                                <button class="cont_q " type="button">
-                    <span class="num">Q
-                    </span>
-                    <p>2014년 8월 10일 기업형 전용디자인 출시</p>
-                </button>    
-            
-                <div class="cont_a">
-                                            
-                    <p><span style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">Make24에서는 트렌드에 맞는 샘플디자인제공을 위해</span>&nbsp;</p><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">이번 업종별 최적화 기획을 계기로</div><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">기업형 전용디자인을 출시하게 되었습니다.</div><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">&nbsp;</div><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">좀 더 다양하고 트렌디한 디자인을 보여드릴 것을 약속드립니다.</div><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">&nbsp;</div><div style="color: rgb(102, 102, 102); font-family: &quot;Nanum Gothic&quot;;">앞으로도 많은 관심과 격려 부탁드립니다.</div>                </div>
-            </div>
-                                </div>
-            
-                
-        <div class="btn_area">
-            <ul class="adm_btns">
-                                            </ul>
-                    </div>
-    </form>
-</div>
+         <!-- 콘텐츠영역 -->
+         <div id="sh_content00">
 
-<script>
+            <div id="sh_faq">
+
+
+               <div class="list_top">
+                  <fieldset id="sh_bo_sch">
+                     <legend>게시물 검색</legend>
+                     <form name="fsearch" method="get">
+                        <input type="hidden" name="bo_table" value="table27"> <input
+                           type="hidden" name="sca" value=""> <input type="hidden"
+                           name="sop" value="and"> <label for="sfl"
+                           class="sound_only">검색대상</label> <select name="sfl" id="sfl">
+                           <option value="wr_subject">제목</option>
+                           <option value="wr_content">내용</option>
+                           <option value="wr_subject||wr_content">제목+내용</option>
+                           <option value="mb_id,1">아이디</option>
+                           <option value="wr_name,1">글쓴이</option>
+                        </select> <label for="stx" class="sound_only">검색어<strong
+                           class="sound_only"> 필수</strong></label> <input type="text" name="stx"
+                           value="" required id="stx" class="sch_input" size="25"
+                           maxlength="20"> <input type="image"
+                           src="../img/sh_search.png" alt="검색" name="submit"
+                           value="submit" />
+                     </form>
+                  </fieldset>
+               </div>
+
+               <form name="fboardlist" id="fboardlist"
+                  onsubmit="return fboardlist_submit(this);">
+                  <input type="hidden" name="bo_table" value="table27"> <input
+                     type="hidden" name="sfl" value=""> <input type="hidden"
+                     name="stx" value=""> <input type="hidden" name="spt"
+                     value=""> <input type="hidden" name="page" value="1">
+                  <input type="hidden" name="sw" value="">
+
+                  <div class="faq_wrap">
+                     <div class="cont_faq">
+                        <button class="cont_q open" type="button">
+                           <span class="num">Q </span>
+                           <p>제작 기간은 얼마나 걸리나요?</p>
+                        </button>
+
+                        <div class="cont_a">
+
+                           <p>
+                              <span
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">홈페이지의
+                                 기본 틀을 구축해드리는 시간은 2~3일이면 충분합니다.</span><br
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">
+                              <span
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">고객님께서
+                                 준비해주시는 자료의 시간에 따라서 제작완료 기간이 정해집니다.</span><br
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">
+                              <span
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">인사말,
+                                 연혁, 기타 소개 부분이 모두 준비되셨다면 7일 안에 정상사용가능하도록 제작이 됩니다.</span><br
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">
+                              <span
+                                 style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; background-color: rgb(255, 255, 255); font-size: 14.4px;">빠른
+                                 제작을 위해.&nbsp;인사말, 연혁, 소개 부분, 도메인이름 을 미리 정해주시면 빠르게 제작이 가능합니다.</span>&nbsp;
+                           </p>
+                        </div>
+                     </div>
+                     <div class="cont_faq">
+                        <button class="cont_q " type="button">
+                           <span class="num">Q </span>
+                           <p>무료 홈페이지 정말 무료인가요?</p>
+                        </button>
+
+                        <div class="cont_a">
+
+                           <div
+                              style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">
+                              저희 무료디자인을 사용하시는 것은 무료 입니다.<br style="box-sizing: border-box;">
+                              <br style="box-sizing: border-box;">무료디자인을 고객님 업체에 맞게
+                              셋팅하는 비용과 웹 호스팅 1년 유지비용이 들어갑니다.<br
+                                 style="box-sizing: border-box;"> <br
+                                 style="box-sizing: border-box;">&nbsp;
+                           </div>
+                           <p
+                              style="box-sizing: border-box; word-break: break-all; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">
+                              <a
+                                 href="http://co1001.shiningcorp.com/bbs/board.php?bo_table=table19&amp;wr_id=2"
+                                 style="box-sizing: border-box; color: rgb(0, 0, 0); text-decoration-line: none; cursor: pointer; font-size: 14.4px;"><br
+                                 style="box-sizing: border-box;">&nbsp;</a>
+                           </p>
+                           <div
+                              style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">
+                              <strong style="box-sizing: border-box;">*도메인 :</strong><br
+                                 style="box-sizing: border-box;"> <br
+                                 style="box-sizing: border-box;">홈페이지의&nbsp;<a
+                                 href="http://www.xn--jx2bx8w.com/"
+                                 style="box-sizing: border-box; color: rgb(0, 0, 0);">www.이름.com</a>&nbsp;과
+                              같은 주소 이름입니다.
+                           </div>
+                           <p
+                              style="box-sizing: border-box; word-break: break-all; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">
+                              <a
+                                 href="http://co1001.shiningcorp.com/bbs/board.php?bo_table=table19&amp;wr_id=2"
+                                 style="box-sizing: border-box; color: rgb(0, 0, 0); text-decoration-line: none; cursor: pointer; font-size: 14.4px;"><br
+                                 style="box-sizing: border-box;">&nbsp;</a>
+                           </p>
+                           <div
+                              style="box-sizing: border-box; color: rgb(102, 102, 102); font-family: &amp; amp; quot; Nanum Gothic&amp;amp; quot;; font-size: 13.2px; background-color: rgb(255, 255, 255);">
+                              <strong style="box-sizing: border-box;">*웹호스팅 :</strong><br
+                                 style="box-sizing: border-box;"> <br
+                                 style="box-sizing: border-box;">제작이 끝난 홈페이지의 모든 이미지 내용들은
+                              서버라는 컴퓨터에 저장이 되어야만&nbsp;전국 전세계 어디서든 볼수 있습니다.&nbsp;<br
+                                 style="box-sizing: border-box;"> <br
+                                 style="box-sizing: border-box;">이 서버라는 컴퓨터의 저장공간 임대 비용을
+                              웹호스팅 이라합니다.
+                           </div>
+                        </div>
+                     </div>
+                     <div class="cont_faq">
+                        <button class="cont_q " type="button">
+                           <span class="num">Q </span>
+                           <p>2014년 8월 10일 기업형 전용디자인 출시</p>
+                        </button>
+
+                        <div class="cont_a">
+
+                           <p>
+                              <span
+                                 style="color: rgb(102, 102, 102); font-family: &amp; amp;">Make24에서는
+                                 트렌드에 맞는 샘플디자인제공을 위해</span>&nbsp;
+                           </p>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">이번
+                              업종별 최적화 기획을 계기로</div>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">기업형
+                              전용디자인을 출시하게 되었습니다.</div>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">&nbsp;</div>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">좀
+                              더 다양하고 트렌디한 디자인을 보여드릴 것을 약속드립니다.</div>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">&nbsp;</div>
+                           <div style="color: rgb(102, 102, 102); font-family: &amp; amp;">앞으로도
+                              많은 관심과 격려 부탁드립니다.</div>
+                        </div>
+                     </div>
+                  </div>
+
+
+                  <div class="btn_area" style="text-align: right;">
+                     <a href="#" th:href="@{/board/faqwrite}">
+                        <button th:if="${session.loginMember} == null"
+                           style="display: inline-block; width: 120px; height: 30px; margin: 0 auto; border-radius: 2px; font-size: 15px; color: #fff; text-align: center; line-height: 25px; background-color: #0054a6; font-family: 'notokr-medium'">게시글
+                           작성</button>
+                     </a>
+                  </div>
+               </form>
+            </div>
+
+            <script>
 $('.cont_q').click(function(){
     $(this).toggleClass('open');
     $(this).siblings('.cont_a').slideToggle(200);
 });
 
-</script>          </div><!-- sh_content -->
-        </div> <!-- sh_container_1150 -->
+</script>
+         </div>
+         <!-- sh_content -->
+      </div>
+      <!-- sh_container_1150 -->
 
 
 
-</th:block>
+   </th:block>
 
 </th:block>
 

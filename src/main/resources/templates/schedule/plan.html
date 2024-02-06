@@ -1,320 +1,592 @@
 <!DOCTYPE HTML>
-<html  xmlns:th="http://www.thymeleaf.org" lang="ko">
-
-<th:block
-	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
-
-	<th:block th:fragment="title">
-			<title>일정 관리</title>
-	</th:block>
-
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+  <th:block th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+    <th:block th:fragment="title">
+      <title>일정 관리</title>
+    </th:block>
     <!-- 반응형 구조 만들기 -->
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <th:block th:fragment="css">
+      <!-- 내부 CSS 스타일 지정 -->
+      <style>
+      /* [컨테이너 크기 설정] */
+      #calendar {
+        width: 75%;
+        height: 90%;
+        margin: 0 auto;
+        position: relative;
+        top: 5%;
+        margin-top: 100px;
+        font-size: 12px;
+      }
 
+      /* 일정 크기 */
+      .fc-event-title {
+       font-size: 18px;
+       background-color: black;
+       color:white;
+      }
+      
+      .modal {
+		  display: none;
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  z-index: 1000;
+		  width: 80%;
+		  max-width: 600px;
+		  background-color: rgba(32, 31, 36, 0.9); /* 어두운 배경 색상 */
+		  border-radius: 10px;
+		  box-shadow: 0 5px 15px rgba(212, 171, 171, 0.3);
+		  padding: 20px;
+		  text-align: center;
+		  font-family: Arial, sans-serif;
+		  font-size: 1.5em;
+		  overflow-y: auto;
+		  color: #FFF; /* 텍스트 색상을 흰색으로 설정 */
+		}
+		
+		.modal-content {
+		  background-color: rgba(0, 0, 0, 0.9); /* 모달 내부 배경 색상 */
+		  border-radius: 10px;
+		  padding: 20px;
+		}
+		
+		.modal-content input[type="text"],
+		.modal-content input[type="date"] {
+		  width: 100%;
+		  padding: 10px;
+		  border: 2px solid gray;
+		  border-radius: 5px;
+		  font-size: 1em;
+		  background-color:gray; /* 입력 필드 배경 색상 */
+		  color: #FFF; /* 입력 필드 텍스트 색상 */
+		}
+		
+		.modal-content label {
+		  display: block;
+		  font-weight: bold;
+		  color:white; /* 라벨 텍스트 색상 */
+		  margin-top: 10px;
+		}
+		
+		.modal-content button {
+		  background-color: rgb(126, 126, 126);
+		  color: #FFF;
+		  border: none;
+		  padding: 10px 20px;
+		  font-size: 1em;
+		  cursor: pointer;
+		  border-radius: 5px;
+		  margin-right: 10px;
+		  margin-top: 20px;
+		}
+		
+		.modal-content button:last-child {
+		  margin-right: 0;
+		}
+		
+		/* 모달 닫기 버튼 */
+		.close {
+		  position: absolute;
+		  top: 10px;
+		  right: 10px;
+		  cursor: pointer;
+		  font-size: 30px;
+		  color: #FFF;
+		}
+		
+		.close:hover {
+		  color: red; /* 마우스 호버 시 색상 변경 */
+		  
+		}
 
-	<th:block th:fragment="css">
-    <!-- 내부 CSS 스타일 지정 -->
-    <style>
+  
+</style>
 
+      <!-- ===================================================================================================== -->
+      <!-- [CDN 주소 설정] -->
+      <!-- ===================================================================================================== -->
+      <link
+        href="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css"
+        rel="stylesheet"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js"></script>
+      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
 
-        /* [컨테이너 크기 설정] */
-        #calendar {
-            width: 75%;
-            height: 90%;
-            margin: 0 auto;
-            position: relative;
-            top: 5%;
-            margin-top : 100px;
-        }
-
-        .modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 80%;
-    max-width: 600px;
-    background-color: #ffffff; /* 배경색을 흰색으로 설정 */
-    border-radius: 10px; /* 가장자리를 둥글게 만듭니다. */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* 그림자 효과 조정 */
-    padding: 50px;
-    text-align: center;
-    font-family: Arial, sans-serif; /* 폰트 설정 */
-    font-size : 1.5em;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    color: #333; /* 닫기 버튼 색상 조정 */
-}
-    </style>
-
-
-
-
-
-    <!-- ===================================================================================================== -->
-    <!-- [CDN 주소 설정] -->
-    <!-- ===================================================================================================== -->
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
-    <!-- ===================================================================================================== -->
-
-</th:block>
-
-
-
-
+    
+      <!-- ===================================================================================================== -->
+    </th:block>
     <!-- ===================================================================================================== -->
     <!-- [자바스크립트 코드 지정] -->
     <!-- ===================================================================================================== -->
-   
-<th:block th:fragment="content">
-
-<!-- 상단 메뉴 시작 -->
-<div id="sh_container">
-            <div id="sh_container_wrapper">
-                <!-- 서브 비주얼영역 -->
-                <div id="sub_main_banner">
-                    <div id="sh_content_tit">
-                        <h3>SCHEDULE</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
-                    </div>
-                </div>
-                <!-- 서브 비주얼영역 끝 -->
-
-                <!-- 서브메뉴 -->
-                <div id="sh_aside">
-                    <div id="sh_aside_wrapper">
-                        <ul id="sh_snb">
-                            <li class='l_menu_ON'>
-                                <a href="page6.html">SHINING레져 소개</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
-                            </li>
-                        </ul>
-                        <!-- 소분류 끝 -->
-                    </div>
-                </div>
-                </div>
-                </div>
-                
-<!-- 상단 메뉴 끝 -->
-
-    <div id="eventModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>일정 상세 정보</h2>
-            <p>여기에 일정 내용을 표시합니다.</p>
+    <th:block th:fragment="content">
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+        <div id="sh_container_wrapper">
+          <!-- 서브 비주얼영역 -->
+          <div id="sub_main_banner">
+            <div id="sh_content_tit">
+              <h3>SCHEDULE</h3>
+              <p>
+                <a href="/index.html">HOME</a> &nbsp;&nbsp;&nbsp;<img
+                  src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;SCHEDULE
+              </p>
+            </div>
+          </div>
+          <!-- 서브 비주얼영역 끝 -->
+          <!-- 서브메뉴 -->
+          <div id="sh_aside">
+            <div id="sh_aside_wrapper">
+              <ul id="sh_snb">
+                <li class="l_menu_ON"><a href="#">클럽 일정</a>
+                </li>
+              </ul>
+              <!-- 소분류 끝 -->
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+      <!-- 상단 메뉴 끝 -->
+      <form action="/schedule/plan" method="post">
+        <div id="eventModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeEventModal()">&times;</span>
+            <h2>일정 추가</h2>
+            <div class="divider"></div>
+            <div class="input-field">
+              <label for="eventTitle">일정 제목</label> <input type="text"
+                id="eventTitle" placeholder="일정 제목">
+              </div>
+            <div class="input-field">
+              <label for="eventStart">시작 날짜</label> <input type="text"
+                id="eventStart" placeholder="시작 날짜">
+            </div>
+            <div class="input-field">
+              <label for="eventEnd">종료 날짜</label> <input type="text"
+                id="eventEnd" placeholder="종료 날짜">
+            </div>
+            <div class="input-field">
+              <label for="eventContent">일정 내용</label> <input type="text"
+                id="eventContent" placeholder="일정 내용">
+            </div>
+            <div class="input-field">
+              <label for="eventLocation">주소</label>
+              <input type="text" id="eventLocation"  placeholder="주소"  value="${event.extendedProps?.location || ''}" onclick="openAddressSearch();" readonly>
+            </div>
+            <button type="button" onclick="addEvent()">추가</button>
+            <button type="button" onclick="removeEvent()">삭제</button>
+          </div>
+        </div>
+      </form>
+      <!-- [컨테이너 생성] -->-
+      <div id="calendar"></div>
 
-    <!-- [컨테이너 생성] -->
-    <div id="calendar"></div>
+      <script th:inline="javascript">
+        const initializedPlans = /*[[${plans}]]*/ {}
+        const rank = /*[[${session.loginMember.rank}]]*/ '';
+      </script>
 
+      <script>
+  function openAddressSearch() {
 
+    new daum.Postcode({
+             oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+ 
+                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+ 
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+                // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                if(fullRoadAddr !== ''){
+                    fullRoadAddr += extraRoadAddr;
+                }
+ 
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                console.log(data.zonecode);
+                console.log(fullRoadAddr);
+                
+                
+                $("[name=addr1]").val(data.zonecode);
+                $("[name=addr2]").val(fullRoadAddr);
+                
 
-    <script>
-
-
-
-        // [html 최초 로드 및 이벤트 상시 대기 실시] 
-        window.onload = async function () {
-            console.log("");
-            console.log("=========================================");
-            console.log("[window onload] : [start]");
-            console.log("=========================================");
-            console.log("");
-
-
-            // [현재 날짜 및 시간 확인]
-            var korea_date = dayjs(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
-            var format = "YYYY-MM-DDTHH:mm:ss"; // 포맷 타입
-            var koreaNow = korea_date.format(format);
-
-
-            // [calendar 객체 지정]
-            var calendarElement = document.getElementById("calendar");
-
-
-            // [full-calendar 생성]
-            var calendar = new FullCalendar.Calendar(calendarElement, {
-
-                expandRows: true, // 화면에 맞게 높이 재설정
-                slotMinTime: '00:00', // 캘린더에서 일정 시작 시간
-                slotMaxTime: '23:59', // 캘린더에서 일정 종료 시간
-
-                // 해더에 표시할 툴바
-                headerToolbar: {
-                    left: 'prev,next', // 이전, 다음
-                    //left: 'prev,next,today', // 이전, 다음, 오늘
-                    center: 'title', // 중앙 타이틀
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' // 월, 일
-                    //right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' // 월, 주, 일, 일정목록
-                },
-
-                initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면 (기본 설정: 달)
-
-                //initialDate: '2023-08-06', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-
-                navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
-
-                editable: true, // 수정 가능 여부
-
-                selectable: true, // 달력 일자 드래그 설정가능
-
-                nowIndicator: true, // 현재 시간 마크
-
-                dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
-
-                locale: 'ko', // 한국어 설정
-
-                selectLongPressDelay: 300, // 선택 클릭 발동 시간 
-
-                eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
-                    console.log("");
-                    console.log("=========================================");
-                    console.log("[window onload] : [eventAdd]");
-                    console.log("-----------------------------------------");
-                    console.log("[eventAdd] : " + JSON.stringify(obj));
-                    console.log("=========================================");
-                    console.log("");
-                },
-
-                eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
-                    console.log("");
-                    console.log("=========================================");
-                    console.log("[window onload] : [eventChange]");
-                    console.log("-----------------------------------------");
-                    console.log("[eventChange] : " + JSON.stringify(obj));
-                    console.log("=========================================");
-                    console.log("");
-                },
-
-                eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
-                    console.log("");
-                    console.log("=========================================");
-                    console.log("[window onload] : [eventRemove]");
-                    console.log("-----------------------------------------");
-                    console.log("[eventRemove] : " + JSON.stringify(obj));
-                    console.log("=========================================");
-                    console.log("");
-                },
-
-                //*
-                eventClick: function (info) { // 등록된 일정 클릭 이벤트
-                    console.log("");
-                    console.log("=========================================");
-                    console.log("[window onload] : [eventClick]");
-                    console.log("-----------------------------------------");
-                    console.log("[eventClick] : " + JSON.stringify(info));
-                    console.log("=========================================");
-                    console.log("");
-
-                    // 더블클릭시 삭제
-                    if (info.jsEvent.detail === 2) {
-                        // 캘린더에서 해당 일정 삭제
-                        info.event.remove();
-                        closeEventModal();
-                    } else {
-                        displayEventModal(info.event);
-                    }
-
-                },
-
-
-
-                select: function (arg) { // 캘린더에서 특정 일자 선택 및 드래그로 일정 등록
-                    console.log("");
-                    console.log("=========================================");
-                    console.log("[window onload] : [select]");
-                    console.log("-----------------------------------------");
-                    console.log("[arg] : " + JSON.stringify(arg));
-                    console.log("=========================================");
-                    console.log("");
-
-                    var title = prompt('일정 제목을 입력하세요');
-                    if (title) {
-                        calendar.addEvent({
-                            title: title,
-                            start: arg.start,
-                            end: arg.end,
-                            allDay: arg.allDay
-                        })
-                    }
-                    calendar.unselect()
-                },
-
-                // 이벤트 일정 등록
-                events: [
-                    { title: 'Go90', start: koreaNow, end: koreaNow }
-                ]
-            });
-
-            function displayEventModal(event) {
-                var modal = document.getElementById("eventModal");
-                var modalContent = modal.querySelector(".modal-content");
-
-                // 모달 내용을 업데이트
-                modalContent.innerHTML = `
-        <span class="close" onclick="closeEventModal()">&times;</span>
-        <h2>${event.title}</h2>
-        <p>시작일: ${event.start.toLocaleString()}</p>
-        <p>종료일: ${event.end.toLocaleString()}</p>
-        <p>장소: 서울특별시 노원구</p>
-        <p>상세설명: 회식 하겠슴돵</p>
-
-    `;
-
-
-                const closeSpan = document.querySelector('.close').addEventListener('click', ()=> {
-                    closeEventModal();
-                });
-
-                // 모달 창을 표시
-                modal.style.display = "block";
+                var addressField = document.getElementById("eventLocation"); // 주소 텍스트 필드 선택
+                 addressField.value = fullRoadAddr; // 주소 텍스트 필드에 주소 설정
             }
-            // 모달 창 닫기
-            function closeEventModal() {
-    var modal = document.getElementById("eventModal");
-    modal.style.display = "none";
-}
-
-// 모달 내부의 close 요소를 선택하고 onclick 이벤트 추가
-var closeBtn = document.querySelector(".modal-content .close");
-closeBtn.onclick = closeEventModal;
+            
+         }).open();
+     }
 
 
 
+     
+     
+        function closeEventModal() {
+          var modal = document.getElementById("eventModal");
+          modal.style.display = "none";
+        }
 
-// [캘린더 랜더링]
-            calendar.render();
+        const getValueById = id => {
+          const element = document.getElementById(id)
+          const {
+            value
+          } = element
 
-        };
+          return value
+        }
+
+        function reFetchEvents(events) {
+          window.calendarInstance.removeAllEvents()
+
+          for (let event of events) {
+            window.calendarInstance.addEvent(event)
+          }
+        }
 
         
 
 
-    </script>
+
+        function addEvent() {
+          var form = document.querySelector("form"); // 폼 선택
+          var title = getValueById("eventTitle");
+          var start = getValueById("eventStart");
+          var end = getValueById("eventEnd");
+          var content = getValueById("eventContent");
+          var location = getValueById("eventLocation");
+          
+
+          if (title && start && end) {
+            let param = {
+                planTitle: title,
+                startDate: start,
+                endDate: end,
+                planContent: content,
+                planLocation: location,
+                backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+                
+            };
+
+            const options = {
+              method : "post",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(param)
+            };
+
+            fetch('/schedule/plan', options)
+            .then(res => res.json())
+            .then(plans => {
+              const events = plans.map(plan => ({
+                id: plan['planId'],
+                title: plan['planTitle'],
+                start: plan['startDate'],
+                end: plan['endDate'],
+                content: plan['planContent'],
+                location: plan['planLocation'],
+                backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+              }))
+              reFetchEvents(events)
+            })
+
+            closeEventModal(); 
+          }
+
+          event.preventDefault();
+        }
+
+        function updateEvent(data) {
+          let event = {}
+          if (typeof data === 'number') {
+            event = {
+              id: parseInt(data, 10),
+              title: getValueById("eventTitle"),
+              start: getValueById("eventStart"),
+              end: getValueById("eventEnd"),
+              content: getValueById("eventContent"),
+              location: getValueById("eventLocation"),
+              backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+            }
+          }
+          else {
+            event = data
+          }
+
+          fetch('/schedule/plan/update', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              planId: event.id,
+              planTitle: event.title,
+              startDate: event.start,
+              endDate: event.end,
+              planContent: event.content,
+              planLocation: event.location,
+              backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+            })
+          })
+          .then(res => res.json())
+          .then(plans => {
+            const events = plans.map(plan => ({
+              id: plan['planId'],
+              title: plan['planTitle'],
+              start: plan['startDate'],
+              end: plan['endDate'],
+              content: plan['planContent'],
+              location: plan['planLocation'],
+              backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+            }))
+            reFetchEvents(events)
+          })
+
+          var modal = document.getElementById("eventModal")
+          modal.style.display = ""
+        }
+
+        function removeEvent(eventId) {
+          fetch('/schedule/plan/delete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              planId: parseInt(eventId, 10),
+            })
+          })
+          .then(res => res.json())
+          .then(plans => {
+            const events = plans.map(plan => ({
+              id: plan['planId'],
+              title: plan['planTitle'],
+              start: plan['startDate'],
+              end: plan['endDate'],
+              content: plan['planContent'],
+              location: plan['planLocation'],
+              backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+            }))
+            reFetchEvents(events)
+          })
+
+          var modal = document.getElementById("eventModal")
+          modal.style.display = ""
+        }
+
+        function displayEventModal(type = 'add', event = {}) {
+  var modal = document.getElementById("eventModal");
+  var modalContent = modal.querySelector(".modal-content");
+
+  let modalHtml = ``;
+  modalHtml += `<span class="close" onclick="closeEventModal()">&times;</span>`;
+  modalHtml += `<h2><일정 ${type === 'add' ? '추가>' : '상세정보>'}</h2>`;
+  modalHtml += `<div class="divider"></div>`;
+  modalHtml += `<div class="input-field">`;
+  modalHtml += `  <label for="eventTitle">일정 제목</label>`;
+  modalHtml += `  <input type="text" id="eventTitle" placeholder="일정 제목" value="${event.title || ''}" ${rank !== '감독' ? 'readonly' : ''}>`;
+  modalHtml += `</div>`;
+  modalHtml += `<div class="input-field">`;
+  modalHtml += `  <label for="eventStart">시작 날짜</label>`;
+  modalHtml += `  <input type="date" id="eventStart" placeholder="시작 날짜" value="${event.start ? dayjs(event.start).format('YYYY-MM-DD') : ''}" ${rank !== '감독' ? 'readonly' : ''}>`;
+  modalHtml += `</div>`;
+  modalHtml += `<div class="input-field">`;
+    modalHtml += `  <label for="eventEnd">종료 날짜</label>`;
+  modalHtml += `  <input type="date" id="eventEnd" placeholder="종료 날짜" value="${event.end ? dayjs(event.end).format('YYYY-MM-DD') : ''}" ${rank !== '감독' ? 'readonly' : ''}>`;
+  modalHtml += `</div>`;
+  modalHtml += `<div class="input-field">`;
+  modalHtml += `  <label for="eventContent">일정 내용</label>`;
+  modalHtml += `  <input type="text" id="eventContent" placeholder="일정 내용" value="${event.extendedProps?.content || ''}" ${rank !== '감독' ? 'readonly' : ''}>`;
+  modalHtml += `</div>`;
+  modalHtml += `<div class="input-field">`;
+    if (rank === '감독') {
+      modalHtml += `  <label for="eventLocation">주소</label>`;
+      modalHtml += `  <input type="text" id="eventLocation" placeholder="주소" value="${event.extendedProps?.location || ''}" onclick="openAddressSearch();" >`;
+      modalHtml += `</div>`;
+  
+    if (type === 'add') {
+      modalHtml += ` <button type="button" onclick="addEvent()">추가</button>`;
+    }
+    else if (type === 'edit') {
+      modalHtml += `<button type="button" onclick="updateEvent(${event.id})">수정</button>`;
+      modalHtml += `<button type="button" onclick="removeEvent(${event.id})">삭제</button>`;
+    }
+  }else{
+    modalHtml += `  <label for="eventLocation">장소</label>`;
+    modalHtml += `  <input type="text" id="eventLocation" placeholder="장소" value="${event.extendedProps?.location || ''}" readonly>`;
+    modalHtml += `</div>`;
+  }
 
 
-</th:block>
+          modalContent.innerHTML = modalHtml
 
-</th:block>
+          // 모달 창을 표시
+          modal.style.display = "block";
+        }
 
+        // [html 최초 로드 및 이벤트 상시 대기 실시]
+        window.onload = async function () {
+          // [현재 날짜 및 시간 확인]
+          var korea_date = dayjs(
+            new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+          );
+          var format = "YYYY-MM-DD"; // 포맷 타입
+          var koreaNow = korea_date.format(format);
+          // [calendar 객체 지정]
+          var calendarElement = document.getElementById("calendar");
+          
+          // [full-calendar 생성]
+          window.calendarInstance = new FullCalendar.Calendar(calendarElement, {
+            expandRows: true, // 화면에 맞게 높이 재설정
+            slotMinTime: "00:00", // 캘린더에서 일정 시작 시간
+            slotMaxTime: "23:59", // 캘린더에서 일정 종료 시간
+            displayEventTime: false,
+            // 해더에 표시할 툴바
+            headerToolbar: {
+              left: "prev,next", // 이전, 다음
+              center: "title", // 중앙 타이틀
+              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek", // 월, 일
+            },
+            initialView: "dayGridMonth", // 초기 로드 될때 보이는 캘린더 화면 (기본 설정: 달)
+            navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
+            editable: true, // 수정 가능 여부
+            selectable: true, // 달력 일자 드래그 설정가능
+            nowIndicator: true, // 현재 시간 마크
+            dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+            locale: "ko", // 한국어 설정
+            selectLongPressDelay: 300, // 선택 클릭 발동 시간
+            eventAdd: function (obj) {
+              // 이벤트가 추가되면 발생하는 이벤트
+              console.log("");
+              console.log("=========================================");
+              console.log("[window onload] : [eventAdd]");
+              console.log("-----------------------------------------");
+              console.log("[eventAdd] : " + JSON.stringify(obj));
+              console.log("=========================================");
+              console.log("");
+            },
+            eventChange: function (obj) {
+              // 이벤트가 수정되면 발생하는 이벤트
+              if(rank === '감독'){
+              const id = parseInt(obj.event.id, 10)
+              const start = dayjs(obj.event.start).format('YYYY-MM-DD')
+              const end = dayjs(obj.event.end).format('YYYY-MM-DD')
+              const title = obj.event.title
+              const content = obj.event.extendedProps.content
+              const location = obj.event.extendedProps.location
+
+              /**
+               * {
+               *  // key1에 value1 할당
+               *  key1: value1,
+               * // key2에 value2 할당
+               *  key2: value2,
+               * }
+               * 
+               * {
+               *  // keyvalue1 변수를 같은 이름의 키 및 값으로 할당
+               *  keyvalue1,
+               *  keyvalue2,
+               * }
+               */
+
+              updateEvent({
+                id,
+                start,
+                end,
+                title,
+                content,
+                location,
+              });
+            }else if(rank !== '감독'){
+              alert('관리자만 일정을 수정할 수 있습니다.')
+              obj.revert();
+              //window.calendarInstance.refetchEvents();
+            }
+            },
+            eventRemove: function (obj) {
+              // 이벤트가 삭제되면 발생하는 이벤트
+              console.log("");
+              console.log("=========================================");
+              console.log("[window onload] : [eventRemove]");
+              console.log("-----------------------------------------");
+              console.log("[eventRemove] : " + JSON.stringify(obj));
+              console.log("=========================================");
+              console.log("");
+            },
+            eventClick: function (info) {
+              console.log(info)
+              displayEventModal('edit', info.event);
+            },
+            select: function (arg) {
+              if(rank === '감독'){
+              // 캘린더에서 특정 일자 선택 및 드래그로 일정 등록
+              console.log("");
+              console.log("=========================================");
+              console.log("[window onload] : [select]");
+              console.log("-----------------------------------------");
+              console.log("[arg] : " + JSON.stringify(arg));
+              console.log("=========================================");
+              console.log("");
+
+              // 선택한 시작 날짜와 종료 날짜를 가져옵니다.
+              var start = arg.start;
+              var end = arg.end;
+
+              // 날짜 형식을 조정하여 입력 필드에 넣습니다.
+              displayEventModal('add', {start, end});
+              }else{
+                alert('관리자만 일정을 추가할 수 있습니다.')
+              }
+            },
+            events: initializedPlans.map(plan => ({
+              id: plan['planId'],
+              title: plan['planTitle'],
+              start: plan['startDate'],
+              end: plan['endDate'],
+              content: plan['planContent'],
+              location: plan['planLocation'],
+              backgroundColor: 'black', // 배경색을 검은색으로 설정
+              borderColor: 'black', // 테두리 색을 검은색으로 설정
+            }))
+            
+          });
+
+          
+
+          // [캘린더 랜더링]
+          window.calendarInstance.render();
+        };
+        
+        </script>
+
+         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=60647f198682907098abe4b1d62bd876&libraries=services"></script>
+        <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+      </th:block>
+  </th:block>
 </html>

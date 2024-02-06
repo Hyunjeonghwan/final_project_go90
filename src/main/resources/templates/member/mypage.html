@@ -139,14 +139,14 @@
                 <!-- 서브 비주얼영역 끝 -->
 
                 <!-- 서브메뉴 -->
-                <div id="sh_aside">
+                <div id="sh_aside" th:object="${member}">
                     <div id="sh_aside_wrapper">
                         <ul id="sh_snb">
                             <li class='l_menu_ON'>
-                                <a href="/">HOME</a>
+                                <a href="#">마이페이지</a>
                             </li>
                             <li class='l_menu_OFF'>
-                                <a href="">마이페이지</a>
+                                <a th:href="@{/member/{memberId}/mystats(memberId = *{memberId})}">내 스탯</a>
                             </li>
                             
                         </ul>
@@ -198,7 +198,7 @@
             <input type="text" th:value="${member.name}" class="form-control" th:field="*{name}" readonly>
         </section>
    
-   <section class="info">
+   		<section class="info">
             <h5>ID</h5>
             <input type="text" th:value="${member.memberId}" class="form-control" th:field="*{memberId}" readonly>
         </section>

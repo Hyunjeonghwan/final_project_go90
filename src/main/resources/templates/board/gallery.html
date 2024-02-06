@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<th:block
+   th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+
+   <th:block th:fragment="title" th:each="boards : ${boards}">
+      <title th:text="${boards.boardName}">갤러리</title>
+   </th:block>
+
+   <!-- 반응형 구조 만들기 -->
+   <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+
+   <th:block th:fragment="css">
+      <link rel="stylesheet" href="/css/gallerystyle1.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  
+      <style>
+        a {
+           text-decoration: none;
+        }
+       #sh_content78 {
+         margin: 50px 30px;
+       }
+      
+       /* Carousel를 가운데 정렬하고 이미지의 최대 높이를 설정하는 CSS */
+       [id^="carouselExampleDark"] {
+         width: 100%; /* Carousel 너비 조절 */
+         margin: 0 auto; /* 수평 가운데 정렬 */
+         box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.75); /* 그림자 추가 */
+         /* border: 3px solid #000; 테두리 추가 */
+       }
+   
+       /* 모든 이미지의 최대 높이 설정 */
+       .carousel-inner img {
+         max-height: 400px; /* 이미지의 최대 높이를 조절하세요. */
+         margin: 0 auto; /* 수평 가운데 정렬 */
+       }
+   
+       .carousel-caption {
+         padding: 10px; /* 캡션 내부 여백 설정 */
+         color: #fff; /* 텍스트 색상 설정 */
+       }
+   
+       .modal-content .close {
+       border: none;
+       background-color: white;
+       font-size: 30px;
+        }
+        
+        .image-link{
+         width: 240px;
+         margin: 10px;
+      }
+      
+      .gall_img{
+      width: 200px;
+      height: 200px;
+      }
+      .aaa img{
+      	width: 100%;
+      	height: 100%;
+      }
+      
+      </style>
+   </th:block>
+
+
+   <th:block th:fragment="content">
+
+      <!-- 상단 메뉴 시작 -->
+      <div id="sh_container">
+         <div id="sh_container_wrapper">
+            <!-- 서브 비주얼영역 -->
+            <div id="sub_main_banner">
+               <div id="sh_content_tit">
+                  <th:block th:each="boards : ${boards}">
+                     <h3 th:text="${boards.boardName}">갤러리</h3>
+                     <a href="/index.html" th:href="@{/}">HOME</a> &nbsp;&nbsp;&nbsp;<img
+                        src="/img/ar.png" alt="화살표" style="margin-top: -3px" />&nbsp;&nbsp;&nbsp;
+                     <a th:text="${boards.boardName}">갤러리</a>
+                  </th:block>
+                  <a></a>
+               </div>
+            </div>
+            <!-- 서브 비주얼영역 끝 -->
+
+            <!-- 서브메뉴 -->
+            <div id="sh_aside">
+               <div id="sh_aside_wrapper">
+                   
+                        <ul id="sh_snb">
+                            <li class='l_menu_OFF'>
+                                <a href="page6.html">자유게시판</a>
+                            </li>
+                            <li class='l_menu_ON'>
+                                <a href="../bbs/board34fb.html?bo_table=table7">갤러리</a>
+                            </li>
+                        </ul> 
+                       
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- 상단 메뉴 끝 -->
+
+
+      <div id="sh_container_1150">
+         <!-- 콘텐츠영역 -->
+         <div id="sh_content78">
+
+            <!-- 게시판 목록 시작 [s] -->
+            <div id="sh_bo_gall">
+<!--  
+               <ul id="bo_cate_ul_line">
+                  <li><a href="board8399.html?bo_table=table13" id="bo_cate_on">전체</a></li>
+                  <li><a
+                     href="board0b62.html?bo_table=table13&amp;sca=A%ED%83%80%EC%9E%85">A타입</a></li>
+                  <li><a
+                     href="board6836.html?bo_table=table13&amp;sca=B%ED%83%80%EC%9E%85">B타입</a></li>
+                  <li><a
+                     href="boardf36e.html?bo_table=table13&amp;sca=C%ED%83%80%EC%9E%85">C타입</a></li>
+                  <li><a
+                     href="board5fda.html?bo_table=table13&amp;sca=%EA%B8%B0%ED%83%80">기타</a></li>
+               </ul>
+-->
+               <!-- rss / 검색 [e] -->
+
+                  <ul id="sh_gall_ul" class="gall_row" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap;">
+                  <li class="gall_li col-12"  th:each="article : ${articles}" style="width: auto;">
+                     <div class="gall_chk">
+                        <span class="sound_only"> 3 </span>
+                     </div>
+                     <!-- 이미지 요소에 display: inline-block; 스타일 추가 -->
+                     <div class="gall_img" style="display: inline-block;" >
+                        <a href="#" class="aaa image-link col-3" data-bs-toggle="modal" th:data-bs-target="'#modal' + ${article.articleId}">
+                           <img th:src="@{'/board/gallery/' + ${article.imagePath}}" alt="갤러리" >
+                        </a>
+                        <input type="hidden" th:value="${article.articleId}" name="articleId">
+                     </div>
+                     <div class="gall_txt">
+                        <a href="#" class="cate_link"><span th:text="${article.articleTitle}">제목</span></a>
+                        <a href="#" class="tit" th:text="${article.articleRegdate}">등록일</a>
+                     </div>
+                     
+                     
+                     
+                     <!-- 모달 -->
+                     <div class="modal fade" th:id ="'modal' + ${article.articleId}"tabindex="-1" role="dialog" aria-labelledby="imageCarouselModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="imageCarouselModalLabel" th:text="${article.articleTitle}">제목</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <!-- 캐러셀 컨테이너 -->
+                            <!-- id : 캐러셀 ID -->
+                            <div th:id="'carouselExampleDark' + ${article.articleId}" class="carousel carousel-dark slide">
+                              <div class="carousel-inner">
+                                   <div th:each="image : ${images}" class="carousel-item" th:unless="${article.articleId != image.articleId}">
+                                  <img th:src="@{'/board/gallery/' + ${image.imgPath}}" class="d-block w-100" alt="1111">
+                                  </div>
+                              </div>
+                              <button class="carousel-control-prev" type="button" th:data-bs-target="'#carouselExampleDark' + ${article.articleId}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span> <!-- data-bs-target prev 버튼 클릭시 액션 동작할 타겟 캐러셀 ID -->
+                                <span class="visually-hidden">Previous</span>
+                              </button>
+                              <button class="carousel-control-next" type="button" th:data-bs-target="'#carouselExampleDark' + ${article.articleId}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+               </ul>
+  
+                  
+                  
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+   let aaa = document.querySelectorAll('.aaa');
+   let list;
+   list = document.querySelectorAll(".carousel-inner :first-child");
+   for (let i = 0; i < list.length; ++i) {
+      list[i].classList.add('active');
+   }
+
+   aaa.forEach(function (aa) {
+      aa.addEventListener('click', function () {
+         const targetId = aa.dataset.target;
+         const modal = new bootstrap.Modal(document.getElementById(targetId));
+         modal.show();
+      });
+   });
+});
+  /*
+    // 모달 버튼에 이벤트를 건다.
+  $('.image-link').on('click', function(){
+    $('.modal').modal('show');
+  });
+  // 모달 안의 취소 버튼에 이벤트를 건다.
+  $('#closeModalBtn').on('click', function(){
+    $('#modalBox').modal('hide');
+  });
+*/
+  </script>
+                  
+
+
+                  <!-- 버튼 [s] -->
+                  <div class="btn_area" style="text-align: right;">
+                  <th:block th:each="boards : ${boards}">
+                     <a th:href="@{/board/write(boardId=${boards.boardId})}">
+                        <button th:if="${session.loginMember} != null"
+                           style="display: inline-block; width: 120px; height: 40px; margin: 0 auto; border-radius: 2px; font-size: 15px; color: #fff; text-align: center; line-height: 25px; background-color: #0054a6; font-family: 'notokr-medium'">게시글
+                           작성</button>
+                     </a>
+                  </th:block>
+               </div>
+                  <!-- 버튼 [e] -->
+            </div>
+            <!-- 게시판 목록 [e] -->
+
+
+         </div>
+         <!-- sh_content -->
+      </div>
+      <!-- sh_container_1150 -->
+
+
+
+   </th:block>
+
+</th:block>
+
+</html>

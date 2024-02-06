@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 
+ * @Project final_project_go90
+ * @Author 현정환, 주성민
+ * @Date 2023. 9. 8.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,8 +22,8 @@ import lombok.ToString;
 @ToString
 @Builder
 public class Member {
-	//@NotBlank(message = "아이디는 필수 입력 항목입니다.")
-	//@Size(min = 6, max = 12)
+	@NotBlank(message = "아이디는 필수 입력 항목입니다.")
+	@Size(min = 4, max = 12)
 	private String memberId;
 	@NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
 	private String passwd;

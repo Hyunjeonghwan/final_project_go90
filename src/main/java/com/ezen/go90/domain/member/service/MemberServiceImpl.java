@@ -10,6 +10,12 @@ import com.ezen.go90.domain.member.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 
+ * @Project final_project_go90
+ * @Author 현정환, 주성민
+ * @Date 2023. 9. 8.
+ */
 @RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -18,22 +24,24 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Override
 	@Transactional
-//	@Transactional(propagation = Propagation.REQUIRED)
 	public void register(Member member) {
 		memberMapper.create(member);
 	}
 
 	@Override
-	public Member isMember(String id, String passwd) {
-		return memberMapper.findByIdAndPasswd(id, passwd);
+	@Transactional
+	public Member isMember(String id, String passwd, String rank) {
+		return memberMapper.findByIdAndPasswd(id, passwd, rank);
 	}
 
 	@Override
+	@Transactional
 	public List<Member> getMemberList() {
 		return memberMapper.findByAll();
 	}
 
 	@Override
+	@Transactional
 	public Member getMember(String id) {
 		return memberMapper.findById(id);
 	}
@@ -45,11 +53,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	@Transactional
 	public void secession(String memberId) {
 		memberMapper.transfer(memberId);
 		memberMapper.delete(memberId);
 	}
 	
-	
-
 }

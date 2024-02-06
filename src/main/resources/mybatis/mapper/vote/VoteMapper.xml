@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper   namespace="com.ezen.go90.domain.vote.mapper.VoteMapper">
+
+	<!-- 참석여부가 Y,이고 vote_id가 {}인 회원 리스트 -->
+      <select id="findSpareMember" parameterType="int"
+      resultType="SpareMember">
+      SELECT
+      vr.voteresult_id,
+      m.name,
+      m.back_number,
+      m.position,
+      m.goal,
+      m.assist,
+      m.defence,
+      m.save,
+      m.member_img,
+      vr.vote_id,
+      TO_CHAR(v.match_date, '""YYYY"년 "MM"월 "DD"일"') match_date
+      FROM voteresult vr
+      JOIN vote v
+      ON v.vote_id = vr.vote_id
+      JOIN member m
+      ON m.member_id = vr.member_id
+      WHERE vr.attend = 'Y' AND vr.vote_id =
+      #{vote_id}
+   </select>
+
+	<!-- 모든 투표 리스트 -->
+   <select id="findByAllVote" resultType="Vote">
+      SELECT vote_id,
+      vote_title,
+      TO_CHAR(vote_date, '""YYYY"년 "MM"월 "DD"일"') vote_date,
+      vote_content,
+      location,
+      TO_CHAR(match_date, '""YYYY"년 "MM"월 "DD"일"') match_date
+      FROM vote
+      ORDER BY vote_date DESC
+   </select>
+   
+   <select id="findVote" resultType="Vote">
+      SELECT vote_id,
+      vote_title,
+      TO_CHAR(vote_date, '""YYYY"년 "MM"월 "DD"일"') vote_date,
+      vote_content,
+      location,
+      TO_CHAR(match_date, '""YYYY"년 "MM"월 "DD"일"') match_date
+      FROM vote
+      WHERE vote_id = #{voteId}
+   </select>
+   
+   <!-- 투표 생성 -->
+   <insert id="create" parameterType="Vote">
+      INSERT INTO vote(vote_id, vote_title, vote_content, location, match_date)
+      VALUES(vote_id_seq.NEXTVAL, #{voteTitle}, #{voteContent}, #{location}, #{matchDate})
+   </insert>
+   
+   <!-- 투표 삭제 -->
+   <delete id="delete" parameterType="int">
+	    DELETE FROM vote
+	    WHERE vote_id=#{voteId}
+	</delete>
+	
+	<!-- 투표 수정 -->
+	<update id="update" parameterType="Vote">
+      UPDATE vote
+      <set>
+           <if test="voteTitle != null">vote_title = #{voteTitle},</if>
+           <if test="voteContent != null">vote_content = #{voteContent}</if>
+      </set>
+      WHERE vote_id = #{voteId}
+   </update>
+   
+   <!-- 참석 여부 전송 -->
+   <insert id="attend" parameterType="VoteResult">
+   		INSERT INTO voteresult (voteresult_id, attend, vote_id, member_id)
+		SELECT voteresult_id_seq.NEXTVAL, 'Y', vote_id, #{memberId}
+		FROM vote
+		WHERE vote_id = #{voteId}
+   </insert>
+   
+   <!-- 해당 투표에 참석 투표한 회원 검색 -->
+   <select id="findByVoteId" parameterType="int" resultType="VoteResult">
+      SELECT voteresult_id, attend, vote_id, member_id
+      FROM voteresult
+      WHERE vote_id = #{voteId}
+   </select>
+   
+   <!-- 해당 투표에 참석 투표한 회원 검색 -->
+   <select id="findByMemberId" parameterType="String" resultType="VoteResult">
+      SELECT voteresult_id, attend, vote_id, member_id
+      FROM voteresult
+      WHERE member_id = #{memberId} AND attend='Y'
+   </select>
+   
+   <!-- 해당 투표에 참석 투표한 회원 검색 -->
+   <select id="findVoteMember" parameterType="Map" resultType="VoteResult">
+      SELECT voteresult_id, attend, vote_id, member_id
+      FROM voteresult
+      WHERE member_id = #{memberId} AND vote_id = #{voteId}
+   </select>
+   
+   <insert id="connectPlan" parameterType="Vote">
+   INSERT INTO plan (plan_id,start_date, plan_title, plan_content, plan_location)
+	    SELECT plan_id_seq.NEXTVAL, #{matchDate} , #{voteTitle}, #{voteContent}, #{location}
+	    FROM vote
+	    WHERE vote_id = (SELECT MAX(vote_id) FROM vote)
+   </insert>
+   
+   <delete id="cancelVote" parameterType="Map">
+	    DELETE FROM voteresult
+	    WHERE member_id = #{memberId} AND vote_id = #{voteId}
+   </delete>
+
+	
+
+</mapper>   

@@ -2,28 +2,283 @@
 <html  xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <th:block
-	th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
+   th:replace="~{/layout/layoutv2 :: setContent(~{this :: title}, ~{this :: content},~{this :: css})}">
 
-	<th:block th:fragment="title">
-			<title>갤러리</title>
-	</th:block>
+   <th:block th:fragment="title">
+         <title>경기 참여 조사</title>
+   </th:block>
 
     <!-- 반응형 구조 만들기 -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 
 
-	<th:block th:fragment="css">
+   <th:block th:fragment="css">
     <link rel="stylesheet" href="/css/vote1.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+            	changeMonth: true,
+            	changeYear: true,
+            	dateFormat: "yy-mm-dd",
+            	monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 텍스트
+                monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 Tooltip
+                dayNamesMin: ['일','월','화','수','목','금','토'],
+                showMonthAfterYear:true
+            });
+        });
+    </script>
     <style>
-    	#sh_content99{
-    		margin: 50px 30px;
-    	}
+       #sh_content99{
+          margin: 50px 30px;
+       }
+       #modal.modal-overlay {
+            width: 100%;
+           /* height: 65vh;*/
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            z-index:1000;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #modal .modal-window {
+            background: rgb(0, 0, 0);
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px ); 
+             -webkit-backdrop-filter: blur( 13.5px ); 
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 440px;
+            height: 580px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+            z-index:1001;
+        }
+        #modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+            
+        }
+        #modal .title h2 {
+            display: inline;
+            font-size : 20px;
+        }
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+        
+        #modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+        
+        #modal .voteTitle {
+        	width: 100%;
+        }
+        
+        #modal .voteContent {
+        	width: 100%;
+        	height : 16vh;
+        	margin-bottom: 20px;
+        } 
+        
+        #modal .voteDate {
+        	width: 100%;
+        	margin-bottom: 20px;
+        }
+        
+        #modal .registVote {
+        	font-size : 20px;
+        	float : right;
+        	border-radius: 5px;
+        	padding : 4px;
+        }
+        
+        #modal .location {
+        	width: 100%;
+        	margin-bottom: 20px;
+        	height : 5vh;
+        }
+        
+        #container2 {
+           	display: inline-block;
+           	
+        }
+          
+        #btn-modal {
+            height:40px;
+        }
+        
+        #modal label {
+        	font-size : 15px;
+        }
+        
+ .ui-widget-header { border: 0px solid #dddddd; background: #fff; } 
+
+ .ui-datepicker-calendar>thead>tr>th { font-size: 14px !important; } 
+
+ .ui-datepicker .ui-datepicker-header { position: relative; padding: 10px 0; } 
+
+ .ui-state-default,
+ .ui-widget-content .ui-state-default,
+ .ui-widget-header .ui-state-default,
+ .ui-button,
+ html .ui-button.ui-state-disabled:hover,
+ html .ui-button.ui-state-disabled:active { border: 0px solid #c5c5c5; background-color: transparent; font-weight: normal; color: #454545; text-align: center; } 
+
+ .ui-datepicker .ui-datepicker-title { margin: 0 0em; line-height: 16px; text-align: center; font-size: 14px; padding: 0px; font-weight: bold; margin-left: 20px; margin-right: 20px;} 
+
+ .ui-datepicker { display: none; background-color: #fff; border-radius: 4px; margin-top: 10px; margin-left: 0px; margin-right: 0px; padding: 20px; padding-bottom: 10px; width: 300px; box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1); } 
+
+ .ui-widget.ui-widget-content { border: 1px solid #eee; } 
+
+ #datepicker:focus>.ui-datepicker { display: block; } 
+
+ .ui-datepicker-prev,
+ .ui-datepicker-next { cursor: pointer; } 
+
+ .ui-datepicker-next { float: right; } 
+
+ .ui-state-disabled { cursor: auto; color: hsla(0, 0%, 80%, 1); } 
+
+ .ui-datepicker-title { text-align: center; padding: 10px; font-weight: 100; font-size: 20px; } 
+
+ .ui-datepicker-calendar { width: 100%; } 
+
+ .ui-datepicker-calendar>thead>tr>th { padding: 5px; font-size: 20px; font-weight: 400; } 
+
+ .ui-datepicker-calendar>tbody>tr>td>a { color: #000; font-size: 12px !important; font-weight: bold !important; text-decoration: none;}
+
+ .ui-datepicker-calendar>tbody>tr>.ui-state-disabled:hover { cursor: auto; background-color: #fff; } 
+
+ .ui-datepicker-calendar>tbody>tr>td { border-radius: 100%; width: 44px; height: 30px; cursor: pointer; padding: 5px; font-weight: 100; text-align: center; font-size: 12px; } 
+
+ .ui-datepicker-calendar>tbody>tr>td:hover { background-color: transparent; opacity: 0.6; } 
+
+ .ui-state-hover,
+ .ui-widget-content .ui-state-hover,
+ .ui-widget-header .ui-state-hover,
+ .ui-state-focus,
+ .ui-widget-content .ui-state-focus,
+ .ui-widget-header .ui-state-focus,
+ .ui-button:hover,
+ .ui-button:focus { border: 0px solid #cccccc; background-color: transparent; font-weight: normal; color: #2b2b2b; } 
+
+ .ui-widget-header .ui-icon { background-image: url('/img/btns.png'); } 
+
+ .ui-icon-circle-triangle-e { background-position: -20px 0px; background-size: 36px; } 
+
+ .ui-icon-circle-triangle-w { background-position: -0px -0px; background-size: 36px; } 
+
+ .ui-datepicker-calendar>tbody>tr>td:first-child a { color: red !important; } 
+
+ .ui-datepicker-calendar>tbody>tr>td:last-child a { color: #0099ff !important; } 
+
+ .ui-datepicker-calendar>thead>tr>th:first-child { color: red !important; } 
+
+ .ui-datepicker-calendar>thead>tr>th:last-child { color: #0099ff !important; } 
+
+ .ui-state-highlight,
+ .ui-widget-content .ui-state-highlight,
+ .ui-widget-header .ui-state-highlight { border: 0px; background: #f1f1f1; border-radius: 50%; padding-top: 10px; padding-bottom: 10px; } 
+
+ .inp { padding: 10px 10px; background-color: #f1f1f1; border-radius: 4px; border: 0px; } 
+
+ .inp:focus { outline: none; background-color: #eee; }
+ 
+ .attend {
+ 	font-size: 25px;
+ 	background-color: #FF7012 ;
+ 	color: white;
+ 	margin-top: 10px;
+ 	padding : 10px;
+ }
+ 
+ .gall_con {
+ 	margin-bottom : 50px;
+ 	color: white;
+ 	font-weight : bold;
+ 	box-shadow: 0px 3px 2px 1px rgba(0, 0, 0, 1);
+ 	border-radius: 20%;
+ 	background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7931547619047619) 55%, rgba(255,255,255,1) 100%);
+ }
+ 
+ .gall_img {
+ 	border: none !important;
+ }
+ 
+ #btn-modal {
+ 	background-color: black ;
+ 	color: white;
+ }
+ 
+ .subject a {
+ 	color: white !important;
+ }
+ 
+ dl dt {
+ 	color: white !important;
+ }
+ .desc_txt{
+ 	color: black;
+ }
+ 
     </style>
     </th:block>
 
    
 <th:block th:fragment="content">
+
+
+
+         <div id="modal" class="modal-overlay">
+              <div class="modal-window">
+                  <div class="title">
+                      <h2>투표 등록</h2>
+                  </div>
+                  <div class="close-area">X</div>
+                  <form action="#" th:action="@{/vote/create}" th:object="${votes}" method="post">
+                  <div class="content">
+                      <label>제목</label><br><br>
+                      <input type="text"  th:field="*{voteTitle}" class="voteTitle" autocomplete="off"><br><br>
+                      <label>내용</label><br><br>
+                      <textarea  th:field="*{voteContent}" class="voteContent" autocomplete="off"></textarea>
+                      <label>일정</label><br><br>
+                      <input type="text" id="datepicker" name="mb_date" value="" required th:field="*{matchDate}"
+                             class="sh_input required voteDate" placeholder="일정" autocomplete="off">
+                      <label>주소</label><br><br>
+                      <input type="text"  th:field="*{location}" class="location" id="eventLocation" onclick="openAddressSearch();" autocomplete="off">
+                      
+                      <input type="submit" value="등록" class="registVote">
+                  </div>
+                  </form>
+              </div>
+          </div>  
+
 
 <!-- 상단 메뉴 시작 -->
 <div id="sh_container">
@@ -31,9 +286,9 @@
                 <!-- 서브 비주얼영역 -->
                 <div id="sub_main_banner">
                     <div id="sh_content_tit">
-                        <h3>갤러리</h3>
-                        <p><a href="/index.html">HOME</a> 
-         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; SCHEDULE &nbsp;&nbsp;&nbsp;<img src="img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 클럽 일정</p>
+                        <h3>경기 참여 조사</h3>
+                        <p><a href="/">HOME</a> 
+         &nbsp;&nbsp;&nbsp;<img src="/img/ar.png" alt="화살표" style="margin-top:-3px"/>&nbsp;&nbsp;&nbsp; 경기 참여 조사</p>
                     </div>
                 </div>
                 <!-- 서브 비주얼영역 끝 -->
@@ -42,15 +297,13 @@
                 <div id="sh_aside">
                     <div id="sh_aside_wrapper">
                         <ul id="sh_snb">
+                            <li class='l_menu_OFF'>
+                                <a href="/schedule/plan">일정</a>
+                            </li>
                             <li class='l_menu_ON'>
-                                <a href="page6.html">SHINING레져 소개</a>
+                                <a href="/vote">경기 참여 조사</a>
                             </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board34fb.html?bo_table=table7">센터 갤러리</a>
-                            </li>
-                            <li class='l_menu_OFF'>
-                                <a href="../bbs/board9208.html?bo_table=table8">오시는길</a>
-                            </li>
+                            
                         </ul>
                         <!-- 소분류 끝 -->
                     </div>
@@ -73,197 +326,60 @@
 
     <!-- rss / 검색 [s] -->
     <div class="list_top">
-              <fieldset id="sh_bo_sch">
-            <legend>게시물 검색</legend>
-            <form name="fsearch" method="get">
-            <input type="hidden" name="bo_table" value="table24">
-            <input type="hidden" name="sca" value="">
-            <input type="hidden" name="sop" value="and">
-            <label for="sfl" class="sound_only">검색대상</label>
-            <select name="sfl" id="sfl">
-                <option value="wr_subject">제목</option>
-                <option value="wr_content">내용</option>
-                <option value="wr_subject||wr_content">제목+내용</option>
-                <option value="mb_id,1">아이디</option>
-                <option value="wr_name,1">글쓴이</option>
-            </select>
-            <label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-            <input type="text" name="stx" value="" required id="stx" class="sch_input" size="25" maxlength="20">
-            <input type="image" src="../img/sh_search.png" alt="검색" name="submit" value="submit" />
-            </form>
-        </fieldset>        
+    
+          <div id="container2">
+                 <button id="btn-modal" type="button" class="btn btn-success">투표 등록</button>
+              <div id="lorem-ipsum"></div>
+          </div>
+              
+          
     </div>
    <!-- rss / 검색 [e] -->
     
-    <form name="fboardlist"  id="fboardlist" action="http://lei1009.shiningcorp.com/bbs/board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
-    <input type="hidden" name="bo_table" value="table24">
-    <input type="hidden" name="sfl" value="">
-    <input type="hidden" name="stx" value="">
-    <input type="hidden" name="spt" value="">
-    <input type="hidden" name="sst" value="wr_num, wr_reply">
-    <input type="hidden" name="sod" value="">
-    <input type="hidden" name="page" value="1">
-    <input type="hidden" name="sw" value="">
-
     
-    <ul id="sh_gall_ul" class="gall_row">
+    <ul id="sh_gall_ul" class="gall_row" th:each="vote : ${voteList}">
 
-              <li class="gall_li">
-            <div class="gall_chk">
-                            <span class="sound_only">
-                    4                </span>
-            </div>
+        <li class="gall_li">
+       <form action="#" th:action="@{/vote/attend}" method="post">
             
-            <!-- gall_con [s] -->
             <div class="gall_con">
                 <div class="gall_img">
-                    <a href="boardc8e1.html?bo_table=table24&amp;wr_id=8">
-                    <img src="../data/file/table24/thumb-1935566037_O4bMdz20_d8d68a4ce42e2357627e519532e1243c94c542e7_311x208.png" alt="기업 샘플디자인입니다." >                    </a>
+                    <img src="/img/vote.gif" alt="투표샘플" >
                 </div>
                 <div class="gall_txt">
                     <div class="subject">
-                                          <a href="boardc8e1.html?bo_table=table24&amp;wr_id=8" class="tit">
-                            기업 샘플디자인입니다.                                                    </a>
+                       <a href="/" class="tit" th:text="${vote.voteTitle}">투표 제목</a>
                     </div>
-                    <div class="desc">            
-                                          <dl>
-                            <dt>디자인코드</dt>
-                            <dd>co0000</dd>
+                    <div class="desc">
+                    <input type="hidden" name="voteId" th:value="${vote.voteId}" class="form-control" readonly>
+                        <dl>
+                            <dt>등록일</dt>
+                            <dd th:text="${vote.voteDate}">2023</dd>
                         </dl>
-                                          <dl>
-                            <dt>디자인 비용</dt>
-                            <dd>프리 제공 (세팅비 별도)</dd>
+                        <dl>
+                            <dt>경기 장소</dt>
+                            <dd th:text="${vote.location}"></dd>
                         </dl>
-                                          <dl>
-                            <dt>설명</dt>
-                            <dd>샤이닝에서 제공하는 기업 샘플디자인입니다.</dd>
+                        <dl>
+                            <dt>경기 일정</dt>
+                            <dd th:text="${vote.matchDate}"></dd>
                         </dl>
-                                         <p class="desc_txt">샤이닝에서 제공하는 기업 샘플디자인입니다. 샤이닝에서 제공하는 기업 샘플디자인입니다. 샤이닝에서 제공하는 기업 샘플디자인입니다. 샤이닝에서 제공하는 기업...</p>                    </div>                               
+                        <p class="desc_txt" th:text="${vote.voteContent}">내용</p>
+                       <!-- <input type="submit" value="참가완료" 
+                               th:if="${#lists.contains(session.attendMember.![voteId], vote.voteId) and session.attendMember.![attend].contains('Y')}" 
+                               th:disabled="disabled"/> -->  
+                        <input type="submit" value="참가취소"  class ="attend"
+                               th:if="${#lists.contains(session.attendMember.![voteId], vote.voteId) and session.attendMember.![attend].contains('Y')}" />       
+                        <input type="submit" value="참가" class ="attend"
+                               th:unless="${#lists.contains(session.attendMember.![voteId], vote.voteId) and session.attendMember.![attend].contains('Y')}"/>
+                    </div>          
                 </div>                
             </div>
-            <!-- gall_con [e] -->
             
+        </form>                     
         </li>
-                <li class="gall_li">
-            <div class="gall_chk">
-                            <span class="sound_only">
-                    3                </span>
-            </div>
-            
-            <!-- gall_con [s] -->
-            <div class="gall_con">
-                <div class="gall_img">
-                    <a href="boardb53d.html?bo_table=table24&amp;wr_id=7">
-                    <img src="../data/file/table24/thumb-1935566037_GQI6zFtx_3560e5c1c806239baa27d910beb7d4b1f151da40_311x208.png" alt="기업 샘플디자인입니다." >                    </a>
-                </div>
-                <div class="gall_txt">
-                    <div class="subject">
-                                          <a href="boardb53d.html?bo_table=table24&amp;wr_id=7" class="tit">
-                            기업 샘플디자인입니다.                                                    </a>
-                    </div>
-                    <div class="desc">            
-                                          <dl>
-                            <dt>디자인코드</dt>
-                            <dd>co0000</dd>
-                        </dl>
-                                          <dl>
-                            <dt>디자인 비용</dt>
-                            <dd>무료</dd>
-                        </dl>
-                                          <dl>
-                            <dt>설명</dt>
-                            <dd>무료샘플디자인</dd>
-                        </dl>
-                                         <p class="desc_txt">기업 샘플디자인입니다.</p>                    </div>                               
-                </div>                
-            </div>
-            <!-- gall_con [e] -->
-            
-        </li>
-                <li class="gall_li">
-            <div class="gall_chk">
-                            <span class="sound_only">
-                    2                </span>
-            </div>
-            
-            <!-- gall_con [s] -->
-            <div class="gall_con">
-                <div class="gall_img">
-                    <a href="board34b8.html?bo_table=table24&amp;wr_id=6">
-                    <img src="../data/file/table24/thumb-1935566037_h1eS8cg9_4de4edf86410768e29233356e011ee3eb2065077_311x208.png" alt="기업 샘플디자인입니다." >                    </a>
-                </div>
-                <div class="gall_txt">
-                    <div class="subject">
-                                          <a href="board34b8.html?bo_table=table24&amp;wr_id=6" class="tit">
-                            기업 샘플디자인입니다.                                                    </a>
-                    </div>
-                    <div class="desc">            
-                                          <dl>
-                            <dt>디자인코드</dt>
-                            <dd>co0000</dd>
-                        </dl>
-                                          <dl>
-                            <dt>디자인 비용</dt>
-                            <dd>무료</dd>
-                        </dl>
-                                          <dl>
-                            <dt>설명</dt>
-                            <dd>무료샘플디자인</dd>
-                        </dl>
-                                         <p class="desc_txt">기업 샘플디자인입니다.&nbsp;</p>                    </div>                               
-                </div>                
-            </div>
-            <!-- gall_con [e] -->
-            
-        </li>
-                <li class="gall_li">
-            <div class="gall_chk">
-                            <span class="sound_only">
-                    1                </span>
-            </div>
-            
-            <!-- gall_con [s] -->
-            <div class="gall_con">
-                <div class="gall_img">
-                    <a href="boardb2e7.html?bo_table=table24&amp;wr_id=5">
-                    <img src="../data/file/table24/thumb-1935566037_Uojqc1yY_85a6130526695d659e481118b4024613b2ec07e2_311x208.png" alt="기업 샘플디자인입니다." >                    </a>
-                </div>
-                <div class="gall_txt">
-                    <div class="subject">
-                                          <a href="boardb2e7.html?bo_table=table24&amp;wr_id=5" class="tit">
-                            기업 샘플디자인입니다.                                                    </a>
-                    </div>
-                    <div class="desc">            
-                                          <dl>
-                            <dt>디자인코드</dt>
-                            <dd>co0000</dd>
-                        </dl>
-                                          <dl>
-                            <dt>디자인 비용</dt>
-                            <dd>무료</dd>
-                        </dl>
-                                          <dl>
-                            <dt>설명 </dt>
-                            <dd>무료샘플디자인</dd>
-                        </dl>
-                                         <p class="desc_txt">기업 샘플디자인입니다.&nbsp;</p>                    </div>                               
-                </div>                
-            </div>
-            <!-- gall_con [e] -->
-            
-        </li>
-                    </ul>
-
         
-    <!-- 버튼 [s] -->
-    <div class="btn_area">
-       <!-- 관리자 버튼 [s] -->
-       <ul class="adm_btns">
-                                            </ul>
-      <!-- 관리자 버튼 [e] -->
-          </div>
-    <!-- 버튼 [e] -->
-    </form>
+     </ul>
 </div>
 <!-- 게시판 목록 끝 [e] -->
 
@@ -271,8 +387,104 @@
 
           </div><!-- sh_content -->
         </div> <!-- sh_container_1150 -->
+        
+     
 
 
+<script>
+let attend = document.querySelector('.attend');
+
+attend.addEventListener('click',() => {
+	if(attend.value ==='참가'){
+		alert('참가 완료! 곧 뵐게요');
+	}else if (attend.value ==='참가취소'){
+		alert('취소 완료! 다음에 봐요');
+	}
+});
+ 
+   //const modalController = document.querySelector("#modal.modal-overlay");
+   //window.addEventListener("load",() => {
+      //modalController.style.display = "none";   
+   //});
+   
+   const loremIpsum = document.getElementById("lorem-ipsum");
+   
+   const modal = document.getElementById("modal");
+   function modalOn() {
+       modal.style.display = "flex"
+   }
+   function isModalOn() {
+       return modal.style.display === "flex"
+   }
+   function modalOff() {
+       modal.style.display = "none"
+   }
+   const btnModal = document.getElementById("btn-modal");
+   btnModal.addEventListener("click", e => {
+       modalOn()
+   })
+   const closeBtn = modal.querySelector(".close-area");
+   closeBtn.addEventListener("click", e => {
+       modalOff()
+   })
+   modal.addEventListener("click", e => {
+       const evTarget = e.target;
+       if(evTarget.classList.contains("modal-overlay")) {
+           modalOff()
+       }
+   })
+   window.addEventListener("keyup", e => {
+       if(isModalOn() && e.key === "Escape") {
+           modalOff()
+       }
+   })
+   
+   function openAddressSearch() {
+
+    new daum.Postcode({
+             oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+ 
+                // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+ 
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+                // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                if(fullRoadAddr !== ''){
+                    fullRoadAddr += extraRoadAddr;
+                }
+ 
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                console.log(data.zonecode);
+                console.log(fullRoadAddr);
+                
+                
+                $("[name=addr1]").val(data.zonecode);
+                $("[name=addr2]").val(fullRoadAddr);
+                
+
+                var addressField = document.getElementById("eventLocation"); // 주소 텍스트 필드 선택
+                 addressField.value = fullRoadAddr; // 주소 텍스트 필드에 주소 설정
+            }
+            
+         }).open();
+     }
+</script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 </th:block>
 

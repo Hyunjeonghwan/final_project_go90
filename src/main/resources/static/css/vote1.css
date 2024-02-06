@@ -64,7 +64,9 @@ a.btn_line{display:inline-block;vertical-align:top;width:75px;height:55px;border
 #bo_cate_ul_line #bo_cate_on{border-bottom:2px solid #222;color:#222;font-family:'notokr-medium'}
 
 /* rss */
-#sh_bo_gall .list_top{position:relative;margin-bottom:12px}
+#sh_bo_gall {position:relative; z-index:999;}
+#sh_bo_gall .list_top:before{display:flex; justify-content:space-between}
+#sh_bo_gall .list_top{position:relative;margin-bottom:12px; }
 #sh_bo_gall .list_top:after{display:block;content:"";visibility:hidden;clear:both}
 #sh_bo_gall .list_top a{display:block;position:absolute;left:0;bottom:0;width:50px;height:24px;margin-top:18px;border-radius:2px;border:1px solid #e1e1e1;font-size:12px;text-align:center;line-height:21px;color:#aaa;background-color:#f6f6f6}
 #sh_bo_gall .list_top a i{padding-right:5px}
